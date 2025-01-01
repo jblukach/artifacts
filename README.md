@@ -1,0 +1,2 @@
+# artifacts
+AMI Artifact Pipeline
