@@ -2,7 +2,6 @@ import cdk_nag
 
 from aws_cdk import (
     Aspects,
-    Duration,
     RemovalPolicy,
     Stack,
     aws_glue_alpha as _glue,
