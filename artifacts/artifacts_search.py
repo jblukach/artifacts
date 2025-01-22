@@ -22,7 +22,7 @@ class ArtifactsSearch(Stack):
         b3types = []
         b3types.append('b3dir')
         b3types.append('b3hash')
-        b3types.append('b3lotl')
+        b3types.append('b3lol')
         b3types.append('b3name')
         b3types.append('b3path')
 
@@ -52,7 +52,7 @@ class ArtifactsSearch(Stack):
                 
                 parameter = _ssm.StringParameter(
                     self, 'parameter'+ostype.lower()+b3type.lower(),
-                    description = ostype.lower()+' '+b3type.lower(),
+                    description = ostype.lower()+'-'+b3type.lower(),
                     parameter_name = '/artifacts/'+ostype.lower()+'/'+b3type.lower(),
                     string_value = 'EMPTY',
                     tier = _ssm.ParameterTier.STANDARD,
