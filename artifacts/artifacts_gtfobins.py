@@ -105,15 +105,15 @@ class ArtifactsGtfobins(Stack):
             ]
         )
 
-        gtfologs = _logs.LogGroup(
-            self, 'gtfologs',
+        logs = _logs.LogGroup(
+            self, 'logs',
             log_group_name = '/4n6ir/lambda/'+gtfobin.function_name,
             retention = _logs.RetentionDays.ONE_MONTH,
             removal_policy = RemovalPolicy.DESTROY
         )
 
-        gtfoevent = _events.Rule(
-            self, 'gtfoevent',
+        event = _events.Rule(
+            self, 'event',
             schedule = _events.Schedule.cron(
                 minute = '0',
                 hour = '10',
@@ -123,7 +123,7 @@ class ArtifactsGtfobins(Stack):
             )
         )
 
-        gtfoevent.add_target(
+        event.add_target(
             _targets.LambdaFunction(
                 gtfobin
             )

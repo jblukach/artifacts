@@ -99,15 +99,15 @@ class ArtifactsLolbas(Stack):
             ]
         )
 
-        lolbalogs = _logs.LogGroup(
-            self, 'lolbalogs',
+        logs = _logs.LogGroup(
+            self, 'logs',
             log_group_name = '/4n6ir/lambda/'+lolba.function_name,
             retention = _logs.RetentionDays.ONE_MONTH,
             removal_policy = RemovalPolicy.DESTROY
         )
 
-        lolbaevent = _events.Rule(
-            self, 'lolbaevent',
+        event = _events.Rule(
+            self, 'event',
             schedule = _events.Schedule.cron(
                 minute = '0',
                 hour = '10',
@@ -117,7 +117,7 @@ class ArtifactsLolbas(Stack):
             )
         )
 
-        lolbaevent.add_target(
+        event.add_target(
             _targets.LambdaFunction(
                 lolba
             )

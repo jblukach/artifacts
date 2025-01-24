@@ -37,6 +37,7 @@ class ArtifactsStack(Stack):
         #    expiration = Duration.days(1),
         #    noncurrent_version_expiration = Duration.days(1)
         #)
+        #
 
         tempmeta = _s3.Bucket(
             self, 'tempmeta',
@@ -53,6 +54,7 @@ class ArtifactsStack(Stack):
         #    expiration = Duration.days(1),
         #    noncurrent_version_expiration = Duration.days(1)
         #)
+        #
 
     ### DATABASE ###
 

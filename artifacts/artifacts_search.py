@@ -20,96 +20,6 @@ class ArtifactsSearch(Stack):
         account = Stack.of(self).account
         region = Stack.of(self).region
 
-    ### IAM ROLE ###
-
-        role = _iam.Role(
-            self, 'role', 
-            assumed_by = _iam.ServicePrincipal(
-                'lambda.amazonaws.com'
-            )
-        )
-
-        role.add_managed_policy(
-            _iam.ManagedPolicy.from_aws_managed_policy_name(
-                'service-role/AWSLambdaBasicExecutionRole'
-            )
-        )
-
-        role.add_to_policy(
-            _iam.PolicyStatement(
-                actions = [
-                    'athena:CreateWorkGroup',
-                    'athena:DeleteWorkGroup',
-                    'athena:GetWorkGroup',
-                    'athena:ListEngineVersions',
-                    'athena:StartQueryExecution',
-                    'athena:StopQueryExecution',
-                    'athena:UpdateWorkGroup',
-                    'dynamodb:Query',
-                    'glue:GetDatabase',
-                    'glue:GetDatabases',
-                    'glue:GetTable',
-                    'glue:GetTables',
-                    'glue:GetPartition',
-                    'glue:GetPartitions',
-                    'glue:BatchGetPartition',
-                    'iam:PassRole',
-                    's3:GetBucketLocation',
-                    's3:GetObject',
-                    's3:ListBucket',
-                    's3:ListBucketMultipartUploads',
-                    's3:ListMultipartUploadParts',
-                    's3:AbortMultipartUpload',
-                    's3:PutObject'
-                ],
-                resources = ['*']
-            )
-        )
-
-    ### LAMBDA ###
-
-        search = _lambda.Function(
-            self, 'search',
-            handler = 'search.handler',
-            runtime = _lambda.Runtime.PYTHON_3_13,
-            code = _lambda.Code.from_asset('search'),
-            architecture = _lambda.Architecture.ARM_64,
-            environment = dict(
-                AWS_ACCOUNT = account
-            ),
-            timeout = Duration.seconds(900),
-            memory_size = 512,
-            retry_attempts = 0,
-            role = role
-        )
-
-        searchlogs = _logs.LogGroup(
-            self, 'searchlogs',
-            log_group_name = '/4n6ir/lambda/'+search.function_name,
-            retention = _logs.RetentionDays.ONE_MONTH,
-            removal_policy = RemovalPolicy.DESTROY
-        )
-
-        searchevent = _events.Rule(
-            self, 'searchevent',
-            schedule = _events.Schedule.cron(
-                minute = '0',
-                hour = '11',
-                month = '*',
-                week_day = 'SUN',
-                year = '*'
-            )
-        )
-
-        #searchevent.add_target(
-        #    _targets.LambdaFunction(
-        #        search
-        #    )
-        #)
-
-
-
-
     ### ATHENA SEARCH ###
 
         b3types = []
@@ -141,6 +51,73 @@ class ArtifactsSearch(Stack):
         ostypes.append('UbuntuLinux24x86')
 
         for ostype in ostypes:
+
+            role = _iam.Role(
+                self, 'role'+ostype.lower(), 
+                assumed_by = _iam.ServicePrincipal(
+                    'lambda.amazonaws.com'
+                )
+            )
+
+            role.add_managed_policy(
+                _iam.ManagedPolicy.from_aws_managed_policy_name(
+                    'service-role/AWSLambdaBasicExecutionRole'
+                )
+            )
+
+            role.add_to_policy(
+                _iam.PolicyStatement(
+                    actions = [
+                        'athena:CreateWorkGroup',
+                        'athena:DeleteWorkGroup',
+                        'athena:GetWorkGroup',
+                        'athena:ListEngineVersions',
+                        'athena:StartQueryExecution',
+                        'athena:StopQueryExecution',
+                        'athena:UpdateWorkGroup',
+                        'dynamodb:Query',
+                        'glue:GetDatabase',
+                        'glue:GetDatabases',
+                        'glue:GetTable',
+                        'glue:GetTables',
+                        'glue:GetPartition',
+                        'glue:GetPartitions',
+                        'glue:BatchGetPartition',
+                        'iam:PassRole',
+                        's3:GetBucketLocation',
+                        's3:GetObject',
+                        's3:ListBucket',
+                        's3:ListBucketMultipartUploads',
+                        's3:ListMultipartUploadParts',
+                        's3:AbortMultipartUpload',
+                        's3:PutObject'
+                    ],
+                    resources = ['*']
+                )
+            )
+
+            search = _lambda.Function(
+                self, 'search'+ostype.lower(),
+                handler = 'search.handler',
+                runtime = _lambda.Runtime.PYTHON_3_13,
+                code = _lambda.Code.from_asset('search'),
+                architecture = _lambda.Architecture.ARM_64,
+                environment = dict(
+                    AWS_ACCOUNT = account
+                ),
+                timeout = Duration.seconds(900),
+                memory_size = 128,
+                retry_attempts = 0,
+                role = role
+            )
+
+            logs = _logs.LogGroup(
+                self, 'logs'+ostype.lower(),
+                log_group_name = '/4n6ir/lambda/'+search.function_name,
+                retention = _logs.RetentionDays.ONE_MONTH,
+                removal_policy = RemovalPolicy.DESTROY
+            )
+
             for b3type in b3types:
                 
                 parameter = _ssm.StringParameter(
@@ -149,4 +126,27 @@ class ArtifactsSearch(Stack):
                     parameter_name = '/artifacts/'+ostype.lower()+'/'+b3type.lower(),
                     string_value = 'EMPTY',
                     tier = _ssm.ParameterTier.STANDARD,
+                )
+
+                event = _events.Rule(
+                    self, 'event'+ostype.lower()+b3type.lower(),
+                    schedule = _events.Schedule.cron(
+                        minute = '0',
+                        hour = '11',
+                        month = '*',
+                        week_day = 'SUN',
+                        year = '*'
+                    )
+                )
+
+                event.add_target(
+                    _targets.LambdaFunction(
+                        search,
+                        event = _events.RuleTargetInput.from_object(
+                            {
+                                "name": ostype,
+                                "category": b3type
+                            }
+                        )
+                    )
                 )
