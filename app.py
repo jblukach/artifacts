@@ -5,6 +5,8 @@ import aws_cdk as cdk
 
 from artifacts.artifacts_gtfobins import ArtifactsGtfobins
 from artifacts.artifacts_lolbas import ArtifactsLolbas
+from artifacts.artifacts_monitor import ArtifactsMonitor
+from artifacts.artifacts_process import ArtifactsProcess
 from artifacts.artifacts_search import ArtifactsSearch
 from artifacts.artifacts_stack import ArtifactsStack
 
@@ -23,6 +25,28 @@ ArtifactsGtfobins(
 
 ArtifactsLolbas(
     app, 'ArtifactsLolbas',
+    env = cdk.Environment(
+        account = os.getenv('CDK_DEFAULT_ACCOUNT'),
+        region = 'us-east-2'
+    ),
+    synthesizer = cdk.DefaultStackSynthesizer(
+        qualifier = '4n6ir'
+    )
+)
+
+ArtifactsMonitor(
+    app, 'ArtifactsMonitor',
+    env = cdk.Environment(
+        account = os.getenv('CDK_DEFAULT_ACCOUNT'),
+        region = 'us-east-2'
+    ),
+    synthesizer = cdk.DefaultStackSynthesizer(
+        qualifier = '4n6ir'
+    )
+)
+
+ArtifactsProcess(
+    app, 'ArtifactsProcess',
     env = cdk.Environment(
         account = os.getenv('CDK_DEFAULT_ACCOUNT'),
         region = 'us-east-2'
