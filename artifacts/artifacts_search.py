@@ -119,12 +119,12 @@ class ArtifactsSearch(Stack):
             )
 
             for b3type in b3types:
-                
+
                 parameter = _ssm.StringParameter(
                     self, 'parameter'+ostype.lower()+b3type.lower(),
                     description = ostype.lower()+'-'+b3type.lower(),
                     parameter_name = '/artifacts/'+ostype.lower()+'/'+b3type.lower(),
-                    string_value = 'EMPTY',
+                    string_value = '0',
                     tier = _ssm.ParameterTier.STANDARD,
                 )
 
