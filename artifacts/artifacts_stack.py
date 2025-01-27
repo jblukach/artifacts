@@ -50,10 +50,10 @@ class ArtifactsStack(Stack):
             versioned = False
         )
 
-        tempmeta.add_lifecycle_rule(
-            expiration = Duration.days(1),
-            noncurrent_version_expiration = Duration.days(1)
-        )
+        #tempmeta.add_lifecycle_rule(
+        #    expiration = Duration.days(1),
+        #    noncurrent_version_expiration = Duration.days(1)
+        #)
 
     ### DATABASE ###
 

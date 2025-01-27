@@ -55,8 +55,7 @@ class ArtifactsProcess(Stack):
                     's3:GetObject',
                     's3:ListBucket',
                     's3:PutObject',
-                    'ssm:GetParameter',
-                    'ssm:PutParameter'
+                    'ssm:GetParameter'
                 ],
                 resources = ['*']
             )
@@ -74,8 +73,8 @@ class ArtifactsProcess(Stack):
                 AWS_ACCOUNT = account
             ),
             timeout = Duration.seconds(900),
-            ephemeral_storage_size = Size.gibibytes(1),
-            memory_size = 2048,
+            ephemeral_storage_size = Size.gibibytes(2),
+            memory_size = 4096,
             retry_attempts = 0,
             role = role,
             layers = [

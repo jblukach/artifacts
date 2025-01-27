@@ -6,8 +6,7 @@ from aws_cdk import (
     aws_events_targets as _targets,
     aws_iam as _iam,
     aws_lambda as _lambda,
-    aws_logs as _logs,
-    aws_ssm as _ssm
+    aws_logs as _logs
 )
 
 from constructs import Construct
@@ -119,14 +118,6 @@ class ArtifactsSearch(Stack):
             )
 
             for b3type in b3types:
-
-                parameter = _ssm.StringParameter(
-                    self, 'parameter'+ostype.lower()+b3type.lower(),
-                    description = ostype.lower()+'-'+b3type.lower(),
-                    parameter_name = '/artifacts/'+ostype.lower()+'/'+b3type.lower(),
-                    string_value = '0',
-                    tier = _ssm.ParameterTier.STANDARD,
-                )
 
                 event = _events.Rule(
                     self, 'event'+ostype.lower()+b3type.lower(),
