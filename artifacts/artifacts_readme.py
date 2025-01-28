@@ -13,7 +13,7 @@ from aws_cdk import (
 
 from constructs import Construct
 
-class ArtifactsBlog(Stack):
+class ArtifactsReadme(Stack):
 
     def __init__(self, scope: Construct, construct_id: str, **kwargs) -> None:
         super().__init__(scope, construct_id, **kwargs)
@@ -60,11 +60,11 @@ class ArtifactsBlog(Stack):
 
     ### LAMBDA ###
 
-        blog = _lambda.Function(
-            self, 'blog',
-            handler = 'blog.handler',
+        readme = _lambda.Function(
+            self, 'readme',
+            handler = 'readme.handler',
             runtime = _lambda.Runtime.PYTHON_3_13,
-            code = _lambda.Code.from_asset('blog'),
+            code = _lambda.Code.from_asset('readme'),
             architecture = _lambda.Architecture.ARM_64,
             environment = dict(
                 AWS_ACCOUNT = account
@@ -80,7 +80,7 @@ class ArtifactsBlog(Stack):
 
         logs = _logs.LogGroup(
             self, 'logs',
-            log_group_name = '/4n6ir/lambda/'+blog.function_name,
+            log_group_name = '/4n6ir/lambda/'+readme.function_name,
             retention = _logs.RetentionDays.ONE_MONTH,
             removal_policy = RemovalPolicy.DESTROY
         )
@@ -98,6 +98,6 @@ class ArtifactsBlog(Stack):
 
         event.add_target(
             _targets.LambdaFunction(
-                blog
+                readme
             )
         )
