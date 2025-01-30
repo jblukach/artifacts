@@ -21,7 +21,7 @@ def handler(event, context):
 
     s3client = boto3.client('s3')
 
-    s3client.download_file('matchmeta', 'poppy-al23-arm', '/tmp/poppy')
+    s3client.download_file('matchmeta', '_binary/poppy-al23-arm', '/tmp/poppy')
     s3client.download_file('tempmeta', 'blake3.csv', '/tmp/blake3.csv')
     s3client.download_file('tempmeta', 'b3lols.csv', '/tmp/b3lols.csv')
 
