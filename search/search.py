@@ -41,6 +41,24 @@ def lolbas():
     lolbas = lolbas[:-1]
     return lolbas
 
+def loobins():
+    table = dynamodb.Table('loobins')
+    response = table.query(
+        KeyConditionExpression = Key('pk').eq('LOO#')
+    )
+    responsedata = response['Items']
+    while 'LastEvaluatedKey' in response:
+        response = table.query(
+            KeyConditionExpression = Key('pk').eq('LOO#'),
+            ExclusiveStartKey = response['LastEvaluatedKey']
+        )
+        responsedata.update(response['Items'])
+    loobins = ''
+    for item in responsedata:
+        loobins = loobins+"'"+item['sk'].lower()+"',"
+    loobins = loobins[:-1]
+    return loobins
+
 def handler(event, context):
 
     print(event)
@@ -94,6 +112,8 @@ def handler(event, context):
 
         if 'Microsoft' in event['name']:
             lols = lolbas()
+        elif 'Apple' in event['name']:
+            lols = loobins()
         else:
             lols = gtfobins()
 
