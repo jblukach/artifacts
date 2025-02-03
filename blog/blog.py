@@ -21,9 +21,9 @@ def handler(event, context):
         w.write('layout: post\n')
         w.write('title: \"Artifacts - BLAKE3\"\n')
         w.write('author: \"John Lukach\"\n')
-        w.write('tags: blake3 gtfobins lolbas poppy\n')
+        w.write('tags: artifacts blake3 gtfobins lolbas loobins poppy\n')
         w.write('---\n\n')
-        w.write('[Artifacts](https://github.com/jblukach/artifacts) release of [BLAKE3](https://github.com/BLAKE3-team/BLAKE3) hashes categorized by operating systems into the content hash, directory, file name, full path, and living-off-the-land ([gtfobins](https://gtfobins.github.io) & [lolbas](https://lolbas-project.github.io)) sets to create [poppy](https://github.com/hashlookup/poppy) blooms.\n\n')
+        w.write('[Artifacts](https://github.com/jblukach/artifacts) release of [BLAKE3](https://github.com/BLAKE3-team/BLAKE3) hashes categorized by operating systems into the content hash, directory, file name, full path, and living-off-the-land ([gtfobins](https://gtfobins.github.io), [lolbas](https://lolbas-project.github.io), & [loobins](https://www.loobins.io)) sets to create [poppy](https://github.com/hashlookup/poppy) blooms.\n\n')
         w.write('| type | total |\n')
         w.write('|-----|\n')
         with open('/tmp/verification.csv', 'r') as f:

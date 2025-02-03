@@ -10,6 +10,9 @@
 - Amazon Linux 2023 ECS Optimized arm64
 - Amazon Linux 2023 ECS Optimized x86
 - Amazon Linux 2023 x86
+- Apple macOS Ventura 13 arm64
+- Apple macOS Sonoma 14 arm64
+- Apple macOS Sequoia 15 arm64
 - Ubuntu Server 18 LTS arm64
 - Ubuntu Server 18 LTS x86
 - Ubuntu Server 20 LTS arm64

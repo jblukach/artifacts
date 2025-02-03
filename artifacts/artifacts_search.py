@@ -34,6 +34,10 @@ class ArtifactsSearch(Stack):
         ostypes.append('AmazonLinux2023x86')
         ostypes.append('AmazonLinux2arm')
         ostypes.append('AmazonLinux2x86')
+    ### Apple macOS ###
+        ostypes.append('AppleVentura13arm')
+        ostypes.append('AppleSonoma14arm')
+        ostypes.append('AppleSequoia15arm')
     ### Microsoft Windows ###
         ostypes.append('MicrosoftWin2k16x86')
         ostypes.append('MicrosoftWin2k19x86')
