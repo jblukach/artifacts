@@ -258,6 +258,153 @@ class ArtifactsStack(Stack):
             )
         )
 
+    ### TABLE - AppleSequoia15arm ###
+
+        applesequoia15arm =  _glue.Table(
+            self, 'applesequoia15arm',
+            bucket = matchmeta,
+            s3_prefix = 'AppleSequoia15arm/',
+            database = database,
+            table_name = 'applesequoia15arm',
+            columns = [
+                _glue.Column(
+                    name = 'amiid',
+                    type = _glue.Schema.STRING
+                ),
+                _glue.Column(
+                    name = 'fpath',
+                    type = _glue.Schema.STRING
+                ),
+                _glue.Column(
+                    name = 'fname',
+                    type = _glue.Schema.STRING
+                ),
+                _glue.Column(
+                    name = 'fsize',
+                    type = _glue.Schema.BIG_INT
+                ),
+                _glue.Column(
+                    name = 'b3hash',
+                    type = _glue.Schema.STRING
+                ),
+                _glue.Column(
+                    name = 'b3name',
+                    type = _glue.Schema.STRING
+                ),
+                _glue.Column(
+                    name = 'b3path',
+                    type = _glue.Schema.STRING
+                ),
+                _glue.Column(
+                    name = 'b3dir',
+                    type = _glue.Schema.STRING
+                )
+            ],
+            data_format = _glue.DataFormat(
+                input_format = _glue.InputFormat.PARQUET,
+                output_format = _glue.OutputFormat.PARQUET,
+                serialization_library = _glue.SerializationLibrary.PARQUET
+            )
+        )
+
+    ### TABLE - AppleSonoma14arm ###
+
+        applesonoma14arm =  _glue.Table(
+            self, 'applesonoma14arm',
+            bucket = matchmeta,
+            s3_prefix = 'AppleSonoma14arm/',
+            database = database,
+            table_name = 'applesonoma14arm',
+            columns = [
+                _glue.Column(
+                    name = 'amiid',
+                    type = _glue.Schema.STRING
+                ),
+                _glue.Column(
+                    name = 'fpath',
+                    type = _glue.Schema.STRING
+                ),
+                _glue.Column(
+                    name = 'fname',
+                    type = _glue.Schema.STRING
+                ),
+                _glue.Column(
+                    name = 'fsize',
+                    type = _glue.Schema.BIG_INT
+                ),
+                _glue.Column(
+                    name = 'b3hash',
+                    type = _glue.Schema.STRING
+                ),
+                _glue.Column(
+                    name = 'b3name',
+                    type = _glue.Schema.STRING
+                ),
+                _glue.Column(
+                    name = 'b3path',
+                    type = _glue.Schema.STRING
+                ),
+                _glue.Column(
+                    name = 'b3dir',
+                    type = _glue.Schema.STRING
+                )
+            ],
+            data_format = _glue.DataFormat(
+                input_format = _glue.InputFormat.PARQUET,
+                output_format = _glue.OutputFormat.PARQUET,
+                serialization_library = _glue.SerializationLibrary.PARQUET
+            )
+        )
+
+    ### TABLE - AppleVentura13arm ###
+
+        appleventura13arm =  _glue.Table(
+            self, 'appleventura13arm',
+            bucket = matchmeta,
+            s3_prefix = 'AppleVentura13arm/',
+            database = database,
+            table_name = 'appleventura13arm',
+            columns = [
+                _glue.Column(
+                    name = 'amiid',
+                    type = _glue.Schema.STRING
+                ),
+                _glue.Column(
+                    name = 'fpath',
+                    type = _glue.Schema.STRING
+                ),
+                _glue.Column(
+                    name = 'fname',
+                    type = _glue.Schema.STRING
+                ),
+                _glue.Column(
+                    name = 'fsize',
+                    type = _glue.Schema.BIG_INT
+                ),
+                _glue.Column(
+                    name = 'b3hash',
+                    type = _glue.Schema.STRING
+                ),
+                _glue.Column(
+                    name = 'b3name',
+                    type = _glue.Schema.STRING
+                ),
+                _glue.Column(
+                    name = 'b3path',
+                    type = _glue.Schema.STRING
+                ),
+                _glue.Column(
+                    name = 'b3dir',
+                    type = _glue.Schema.STRING
+                )
+            ],
+            data_format = _glue.DataFormat(
+                input_format = _glue.InputFormat.PARQUET,
+                output_format = _glue.OutputFormat.PARQUET,
+                serialization_library = _glue.SerializationLibrary.PARQUET
+            )
+        )
+
     ### TABLE - MicrosoftWin2k16x86 ###
 
         microsoftwin2k16x86 =  _glue.Table(

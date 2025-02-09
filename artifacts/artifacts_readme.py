@@ -1,7 +1,6 @@
 from aws_cdk import (
     Duration,
     RemovalPolicy,
-    Size,
     Stack,
     aws_events as _events,
     aws_events_targets as _targets,

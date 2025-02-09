@@ -48,7 +48,9 @@ class ArtifactsLoobins(Stack):
             },
             billing_mode = _dynamodb.BillingMode.PAY_PER_REQUEST,
             removal_policy = RemovalPolicy.DESTROY,
-            point_in_time_recovery = True,
+            point_in_time_recovery_specification = _dynamodb.PointInTimeRecoverySpecification(
+                point_in_time_recovery_enabled = True
+            ),
             deletion_protection = False
         )
 
