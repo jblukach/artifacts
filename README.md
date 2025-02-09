@@ -1,11 +1,5 @@
 # artifacts
 
-Legitimate files found on default OS installations that threat actors can potentially use to perform malicious intent are flagged; this technique is known as living off the land (LOL).
-
-- https://gtfobins.github.io
-- https://lolbas-project.github.io
-- https://www.loobins.io
-
 ### Operating Systems
 
 - Amazon Linux 2 arm64
