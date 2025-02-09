@@ -116,7 +116,7 @@ class ArtifactsSearch(Stack):
 
             logs = _logs.LogGroup(
                 self, 'logs'+ostype.lower(),
-                log_group_name = '/4n6ir/lambda/'+search.function_name,
+                log_group_name = '/aws/lambda/'+search.function_name,
                 retention = _logs.RetentionDays.ONE_MONTH,
                 removal_policy = RemovalPolicy.DESTROY
             )

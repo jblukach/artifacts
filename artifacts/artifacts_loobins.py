@@ -103,7 +103,7 @@ class ArtifactsLoobins(Stack):
 
         logs = _logs.LogGroup(
             self, 'logs',
-            log_group_name = '/4n6ir/lambda/'+loobin.function_name,
+            log_group_name = '/aws/lambda/'+loobin.function_name,
             retention = _logs.RetentionDays.ONE_MONTH,
             removal_policy = RemovalPolicy.DESTROY
         )
