@@ -19,7 +19,7 @@ def handler(event, context):
     with open('/tmp/'+blogname, 'w') as w:
         w.write('---\n')
         w.write('layout: post\n')
-        w.write('title: \"Artifacts - BLAKE3\"\n')
+        w.write('title: \"Artifacts Updated\"\n')
         w.write('author: \"John Lukach\"\n')
         w.write('tags: artifacts blake3 gtfobins lolbas loobins poppy\n')
         w.write('---\n\n')
