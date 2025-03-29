@@ -26,8 +26,8 @@ def handler(event, context):
     s3client.download_file('tempmeta', 'b3lols.csv', '/tmp/b3lols.csv')
 
     os.system('chmod +x /tmp/poppy')
-    os.system('/tmp/poppy create -c 10000000 -p 0.001 /tmp/mmi.poppy')
-    os.system('/tmp/poppy create -c 100000 -p 0.001 /tmp/lol.poppy')
+    os.system('/tmp/poppy create -c 20000000 -p 0.001 /tmp/mmi.poppy')
+    os.system('/tmp/poppy create -c 200000 -p 0.001 /tmp/lol.poppy')
     os.system('/tmp/poppy insert /tmp/mmi.poppy /tmp/blake3.csv')
     os.system('/tmp/poppy insert /tmp/lol.poppy /tmp/b3lols.csv')
     os.system('/tmp/poppy show /tmp/mmi.poppy')
