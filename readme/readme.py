@@ -8,11 +8,42 @@ def handler(event, context):
 
     s3client = boto3.client('s3')
 
-    s3client.download_file('tempmeta', 'verification.csv', '/tmp/verification.csv')
+    s3client.download_file('tempmeta', 'amazon.csv', '/tmp/amazon.csv')
+    s3client.download_file('tempmeta', 'apple.csv', '/tmp/apple.csv')
+    s3client.download_file('tempmeta', 'microsoft.csv', '/tmp/microsoft.csv')
+    s3client.download_file('tempmeta', 'ubuntu.csv', '/tmp/ubuntu.csv')
 
     with open('/tmp/README.md', 'w') as w:
-        w.write('# artifacts\n\n')
-        with open('/tmp/verification.csv', 'r') as f:
+        w.write('# artifacts')
+        w.write('\n\n## Amazon Linux\n\n')
+        with open('/tmp/amazon.csv', 'r') as f:
+            line = f.readline()
+            line = line.split(',')
+            w.write('|'+line[0]+'|'+line[1]+'|'+line[2]+'|'+line[3][:-1]+'|\n')
+            w.write('|:---:|:---:|:---:|:---:|\n')
+            for line in f.readlines():
+                line = line.split(',')
+                w.write('|'+line[0]+'|'+line[1]+'|'+line[2]+'|'+line[3][:-1]+'|\n')
+        w.write('\n\n## Apple macOS\n\n')
+        with open('/tmp/apple.csv', 'r') as f:
+            line = f.readline()
+            line = line.split(',')
+            w.write('|'+line[0]+'|'+line[1]+'|'+line[2]+'|'+line[3][:-1]+'|\n')
+            w.write('|:---:|:---:|:---:|:---:|\n')
+            for line in f.readlines():
+                line = line.split(',')
+                w.write('|'+line[0]+'|'+line[1]+'|'+line[2]+'|'+line[3][:-1]+'|\n')
+        w.write('\n\n## Microsoft Windows\n\n')
+        with open('/tmp/microsoft.csv', 'r') as f:
+            line = f.readline()
+            line = line.split(',')
+            w.write('|'+line[0]+'|'+line[1]+'|'+line[2]+'|'+line[3][:-1]+'|\n')
+            w.write('|:---:|:---:|:---:|:---:|\n')
+            for line in f.readlines():
+                line = line.split(',')
+                w.write('|'+line[0]+'|'+line[1]+'|'+line[2]+'|'+line[3][:-1]+'|\n')
+        w.write('\n\n## Ubuntu Linux\n\n')
+        with open('/tmp/ubuntu.csv', 'r') as f:
             line = f.readline()
             line = line.split(',')
             w.write('|'+line[0]+'|'+line[1]+'|'+line[2]+'|'+line[3][:-1]+'|\n')

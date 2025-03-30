@@ -1,5 +1,13 @@
 # artifacts
 
+Artifacts release of BLAKE3 hashes categorized by operating systems into the content hash, directory, file name, full path, and living-off-the-land (gtfobins, lolbas, & loobins) sets to create poppy blooms.
+
+Proof of Concept: [https://github.com/jblukach/mmi](https://github.com/jblukach/mmi)
+
+Sponsors will be automatically invited to a private repository containing the entire hash set collection for download.
+
+Donationware: [https://github.com/sponsors/jblukach](https://github.com/sponsors/jblukach)
+
 ### Operating Systems
 
 - Amazon Linux 2 arm64
