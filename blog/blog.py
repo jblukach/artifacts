@@ -8,7 +8,10 @@ def handler(event, context):
 
     s3client = boto3.client('s3')
 
-    s3client.download_file('tempmeta', 'verification.csv', '/tmp/verification.csv')
+    s3client.download_file('tempmeta', 'amazon.csv', '/tmp/amazon.csv')
+    s3client.download_file('tempmeta', 'apple.csv', '/tmp/apple.csv')
+    s3client.download_file('tempmeta', 'microsoft.csv', '/tmp/microsoft.csv')
+    s3client.download_file('tempmeta', 'ubuntu.csv', '/tmp/ubuntu.csv')
 
     year = datetime.datetime.now().strftime('%Y')
     month = datetime.datetime.now().strftime('%m')
@@ -24,9 +27,37 @@ def handler(event, context):
         w.write('tags: artifacts blake3 gtfobins lolbas loobins poppy\n')
         w.write('---\n\n')
         w.write('[Artifacts](https://github.com/jblukach/artifacts) release of [BLAKE3](https://github.com/BLAKE3-team/BLAKE3) hashes categorized by operating systems into the content hash, directory, file name, full path, and living-off-the-land ([gtfobins](https://gtfobins.github.io), [lolbas](https://lolbas-project.github.io), & [loobins](https://www.loobins.io)) sets to create [poppy](https://github.com/hashlookup/poppy) blooms.\n\n')
+        w.write('\n\n### Amazon Linux\n\n')
         w.write('| type | total |\n')
         w.write('|-----|\n')
-        with open('/tmp/verification.csv', 'r') as f:
+        with open('/tmp/amazon.csv', 'r') as f:
+            for line in f.readlines():
+                if 'blake3 total' in line or 'blake3 unique' in line or 'b3lols total' in line or 'b3lols unique' in line:
+                    line = line.split(',')
+                    w.write('|'+line[2]+'|'+line[3][:-1]+'|\n')
+        f.close()
+        w.write('\n\n### Apple macOS\n\n')
+        w.write('| type | total |\n')
+        w.write('|-----|\n')
+        with open('/tmp/apple.csv', 'r') as f:
+            for line in f.readlines():
+                if 'blake3 total' in line or 'blake3 unique' in line or 'b3lols total' in line or 'b3lols unique' in line:
+                    line = line.split(',')
+                    w.write('|'+line[2]+'|'+line[3][:-1]+'|\n')
+        f.close()
+        w.write('\n\n### Microsoft Windows\n\n')
+        w.write('| type | total |\n')
+        w.write('|-----|\n')
+        with open('/tmp/microsoft.csv', 'r') as f:
+            for line in f.readlines():
+                if 'blake3 total' in line or 'blake3 unique' in line or 'b3lols total' in line or 'b3lols unique' in line:
+                    line = line.split(',')
+                    w.write('|'+line[2]+'|'+line[3][:-1]+'|\n')
+        f.close()
+        w.write('\n\n### Ubuntu Linux\n\n')
+        w.write('| type | total |\n')
+        w.write('|-----|\n')
+        with open('/tmp/ubuntu.csv', 'r') as f:
             for line in f.readlines():
                 if 'blake3 total' in line or 'blake3 unique' in line or 'b3lols total' in line or 'b3lols unique' in line:
                     line = line.split(',')
