@@ -41,6 +41,16 @@ def handler(event, context):
         f.write(sha256+',lol.poppy\n')
     f.close()
 
+    with open('/tmp/blake3.csv', 'r') as f:
+        lines = f.readlines()
+        b3count = len(lines)
+    f.close()
+
+    with open('/tmp/b3lols.csv', 'r') as f:
+        lines = f.readlines()
+        lolcount = len(lines)
+    f.close()
+
     ssm = boto3.client('ssm')
 
     token = ssm.get_parameter(
@@ -62,7 +72,7 @@ def handler(event, context):
         "tag_name":"v'''+str(year)+'''.'''+str(month)+'''.'''+str(day)+'''",
         "target_commitish":"main",
         "name":"artifacts",
-        "body":"bloom filter: https://github.com/hashlookup/poppy",
+        "body":"### COUNT\\n\\n- **B3:** '''+str(b3count)+'''\\n- **LOL:** '''+str(lolcount)+'''",
         "draft":false,
         "prerelease":false,
         "generate_release_notes":false

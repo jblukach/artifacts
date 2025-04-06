@@ -70,8 +70,8 @@ class ArtifactsRelease(Stack):
                 AWS_ACCOUNT = account
             ),
             timeout = Duration.seconds(900),
-            ephemeral_storage_size = Size.gibibytes(1),
-            memory_size = 1024,
+            ephemeral_storage_size = Size.gibibytes(2),
+            memory_size = 2048,
             retry_attempts = 0,
             role = role,
             layers = [

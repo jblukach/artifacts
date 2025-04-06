@@ -154,6 +154,9 @@ def handler(event, context):
         zipf.write('/tmp/ubuntu.csv','ubuntu.csv')
     zipf.close()
 
+    blake3 = list(set(blake3))
+    b3lols = list(set(b3lols))
+
     with open('/tmp/blake3.csv', 'w') as f:
         for b3 in blake3:
             f.write(b3+'\n')
