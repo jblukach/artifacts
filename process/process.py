@@ -33,6 +33,8 @@ def handler(event, context):
 
     blake3 = []
     b3lols = []
+    totalb3s = []
+    totallols = []
 
     with zipfile.ZipFile('/tmp/amazon.zip', 'w', compression=zipfile.ZIP_DEFLATED, compresslevel=9) as zipf:
         with open('/tmp/amazon.csv', 'w') as f:
@@ -50,8 +52,10 @@ def handler(event, context):
                             count += 1
                             line = line.split(',')
                             blake3.append(line[0])
+                            totalb3s.append(line[0])
                             if 'b3lol' in local:
                                 b3lols.append(line[0])
+                                totallols.append(line[0])
                     r.close()
                     f.write(sha256+','+str(fsize)+','+local+'.csv,'+str(count)+'\n')
             f.write(',,blake3 total,'+str(len(blake3))+'\n')
@@ -63,6 +67,9 @@ def handler(event, context):
         f.close()
         zipf.write('/tmp/amazon.csv','amazon.csv')
     zipf.close()
+
+    blake3 = []
+    b3lols = []
 
     with zipfile.ZipFile('/tmp/apple.zip', 'w', compression=zipfile.ZIP_DEFLATED, compresslevel=9) as zipf:
         with open('/tmp/apple.csv', 'w') as f:
@@ -80,8 +87,10 @@ def handler(event, context):
                             count += 1
                             line = line.split(',')
                             blake3.append(line[0])
+                            totalb3s.append(line[0])
                             if 'b3lol' in local:
                                 b3lols.append(line[0])
+                                totallols.append(line[0])
                     r.close()
                     f.write(sha256+','+str(fsize)+','+local+'.csv,'+str(count)+'\n')
             f.write(',,blake3 total,'+str(len(blake3))+'\n')
@@ -93,6 +102,9 @@ def handler(event, context):
         f.close()
         zipf.write('/tmp/apple.csv','apple.csv')
     zipf.close()
+
+    blake3 = []
+    b3lols = []
 
     with zipfile.ZipFile('/tmp/microsoft.zip', 'w', compression=zipfile.ZIP_DEFLATED, compresslevel=9) as zipf:
         with open('/tmp/microsoft.csv', 'w') as f:
@@ -110,8 +122,10 @@ def handler(event, context):
                             count += 1
                             line = line.split(',')
                             blake3.append(line[0])
+                            totalb3s.append(line[0])
                             if 'b3lol' in local:
                                 b3lols.append(line[0])
+                                totallols.append(line[0])
                     r.close()
                     f.write(sha256+','+str(fsize)+','+local+'.csv,'+str(count)+'\n')
             f.write(',,blake3 total,'+str(len(blake3))+'\n')
@@ -123,6 +137,9 @@ def handler(event, context):
         f.close()
         zipf.write('/tmp/microsoft.csv','microsoft.csv')
     zipf.close()
+
+    blake3 = []
+    b3lols = []
 
     with zipfile.ZipFile('/tmp/ubuntu.zip', 'w', compression=zipfile.ZIP_DEFLATED, compresslevel=9) as zipf:
         with open('/tmp/ubuntu.csv', 'w') as f:
@@ -140,8 +157,10 @@ def handler(event, context):
                             count += 1
                             line = line.split(',')
                             blake3.append(line[0])
+                            totalb3s.append(line[0])
                             if 'b3lol' in local:
                                 b3lols.append(line[0])
+                                totallols.append(line[0])
                     r.close()
                     f.write(sha256+','+str(fsize)+','+local+'.csv,'+str(count)+'\n')
             f.write(',,blake3 total,'+str(len(blake3))+'\n')
@@ -154,16 +173,16 @@ def handler(event, context):
         zipf.write('/tmp/ubuntu.csv','ubuntu.csv')
     zipf.close()
 
-    blake3 = list(set(blake3))
-    b3lols = list(set(b3lols))
+    totalb3s = list(set(totalb3s))
+    totallols = list(set(totallols))
 
     with open('/tmp/blake3.csv', 'w') as f:
-        for b3 in blake3:
+        for b3 in totalb3s:
             f.write(b3+'\n')
     f.close()
 
     with open('/tmp/b3lols.csv', 'w') as f:
-        for b3 in b3lols:
+        for b3 in totallols:
             f.write(b3+'\n')
     f.close()
 
