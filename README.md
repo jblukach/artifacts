@@ -23,6 +23,10 @@ Donationware: [https://github.com/sponsors/jblukach](https://github.com/sponsors
 - Apple macOS Ventura 13 arm64
 - Apple macOS Sonoma 14 arm64
 - Apple macOS Sequoia 15 arm64
+- Red Hat Enterprise Linux 9 arm64
+- Red Hat Enterprise Linux 9 x86
+- SUSE Linux Enterprise Server 15 arm64
+- SUSE Linux Enterprise Server 15 x86
 - Ubuntu Server 18 LTS arm64 **++**
 - Ubuntu Server 18 LTS x86 **++**
 - Ubuntu Server 20 LTS arm64 **++**

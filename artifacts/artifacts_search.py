@@ -43,6 +43,12 @@ class ArtifactsSearch(Stack):
         ostypes.append('MicrosoftWin2k19x86')
         ostypes.append('MicrosoftWin2k22x86')
         ostypes.append('MicrosoftWin2k25x86')
+    ### Red Hat Linux ###
+        ostypes.append('RedHatLinux9arm')
+        ostypes.append('RedHatLinux9x86')
+    ### SUSE Linux ###
+        ostypes.append('SUSELinux15arm')
+        ostypes.append('SUSELinux15x86')
     ### Ubuntu Linux ###
         ostypes.append('UbuntuLinux18arm')
         ostypes.append('UbuntuLinux18x86')

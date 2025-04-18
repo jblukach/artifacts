@@ -601,6 +601,202 @@ class ArtifactsStack(Stack):
             )
         )
 
+    ### TABLE - RedHatLinux9arm ###
+
+        redhatlinux9arm =  _glue.Table(
+            self, 'redhatlinux9arm',
+            bucket = matchmeta,
+            s3_prefix = 'RedHatLinux9arm/',
+            database = database,
+            table_name = 'redhatlinux9arm',
+            columns = [
+                _glue.Column(
+                    name = 'amiid',
+                    type = _glue.Schema.STRING
+                ),
+                _glue.Column(
+                    name = 'fpath',
+                    type = _glue.Schema.STRING
+                ),
+                _glue.Column(
+                    name = 'fname',
+                    type = _glue.Schema.STRING
+                ),
+                _glue.Column(
+                    name = 'fsize',
+                    type = _glue.Schema.BIG_INT
+                ),
+                _glue.Column(
+                    name = 'b3hash',
+                    type = _glue.Schema.STRING
+                ),
+                _glue.Column(
+                    name = 'b3name',
+                    type = _glue.Schema.STRING
+                ),
+                _glue.Column(
+                    name = 'b3path',
+                    type = _glue.Schema.STRING
+                ),
+                _glue.Column(
+                    name = 'b3dir',
+                    type = _glue.Schema.STRING
+                )
+            ],
+            data_format = _glue.DataFormat(
+                input_format = _glue.InputFormat.PARQUET,
+                output_format = _glue.OutputFormat.PARQUET,
+                serialization_library = _glue.SerializationLibrary.PARQUET
+            )
+        )
+
+    ### TABLE - RedHatLinux9x86 ###
+
+        redhatlinux9x86 =  _glue.Table(
+            self, 'redhatlinux9x86',
+            bucket = matchmeta,
+            s3_prefix = 'RedHatLinux9x86/',
+            database = database,
+            table_name = 'redhatlinux9x86',
+            columns = [
+                _glue.Column(
+                    name = 'amiid',
+                    type = _glue.Schema.STRING
+                ),
+                _glue.Column(
+                    name = 'fpath',
+                    type = _glue.Schema.STRING
+                ),
+                _glue.Column(
+                    name = 'fname',
+                    type = _glue.Schema.STRING
+                ),
+                _glue.Column(
+                    name = 'fsize',
+                    type = _glue.Schema.BIG_INT
+                ),
+                _glue.Column(
+                    name = 'b3hash',
+                    type = _glue.Schema.STRING
+                ),
+                _glue.Column(
+                    name = 'b3name',
+                    type = _glue.Schema.STRING
+                ),
+                _glue.Column(
+                    name = 'b3path',
+                    type = _glue.Schema.STRING
+                ),
+                _glue.Column(
+                    name = 'b3dir',
+                    type = _glue.Schema.STRING
+                )
+            ],
+            data_format = _glue.DataFormat(
+                input_format = _glue.InputFormat.PARQUET,
+                output_format = _glue.OutputFormat.PARQUET,
+                serialization_library = _glue.SerializationLibrary.PARQUET
+            )
+        )
+
+    ### TABLE - SUSELinux15arm ###
+
+        suselinux15arm =  _glue.Table(
+            self, 'suselinux15arm',
+            bucket = matchmeta,
+            s3_prefix = 'SUSELinux15arm/',
+            database = database,
+            table_name = 'suselinux15arm',
+            columns = [
+                _glue.Column(
+                    name = 'amiid',
+                    type = _glue.Schema.STRING
+                ),
+                _glue.Column(
+                    name = 'fpath',
+                    type = _glue.Schema.STRING
+                ),
+                _glue.Column(
+                    name = 'fname',
+                    type = _glue.Schema.STRING
+                ),
+                _glue.Column(
+                    name = 'fsize',
+                    type = _glue.Schema.BIG_INT
+                ),
+                _glue.Column(
+                    name = 'b3hash',
+                    type = _glue.Schema.STRING
+                ),
+                _glue.Column(
+                    name = 'b3name',
+                    type = _glue.Schema.STRING
+                ),
+                _glue.Column(
+                    name = 'b3path',
+                    type = _glue.Schema.STRING
+                ),
+                _glue.Column(
+                    name = 'b3dir',
+                    type = _glue.Schema.STRING
+                )
+            ],
+            data_format = _glue.DataFormat(
+                input_format = _glue.InputFormat.PARQUET,
+                output_format = _glue.OutputFormat.PARQUET,
+                serialization_library = _glue.SerializationLibrary.PARQUET
+            )
+        )
+
+    ### TABLE - SUSELinux15x86 ###
+
+        suselinux15x86 =  _glue.Table(
+            self, 'suselinux15x86',
+            bucket = matchmeta,
+            s3_prefix = 'SUSELinux15x86/',
+            database = database,
+            table_name = 'suselinux15x86',
+            columns = [
+                _glue.Column(
+                    name = 'amiid',
+                    type = _glue.Schema.STRING
+                ),
+                _glue.Column(
+                    name = 'fpath',
+                    type = _glue.Schema.STRING
+                ),
+                _glue.Column(
+                    name = 'fname',
+                    type = _glue.Schema.STRING
+                ),
+                _glue.Column(
+                    name = 'fsize',
+                    type = _glue.Schema.BIG_INT
+                ),
+                _glue.Column(
+                    name = 'b3hash',
+                    type = _glue.Schema.STRING
+                ),
+                _glue.Column(
+                    name = 'b3name',
+                    type = _glue.Schema.STRING
+                ),
+                _glue.Column(
+                    name = 'b3path',
+                    type = _glue.Schema.STRING
+                ),
+                _glue.Column(
+                    name = 'b3dir',
+                    type = _glue.Schema.STRING
+                )
+            ],
+            data_format = _glue.DataFormat(
+                input_format = _glue.InputFormat.PARQUET,
+                output_format = _glue.OutputFormat.PARQUET,
+                serialization_library = _glue.SerializationLibrary.PARQUET
+            )
+        )
+
     ### TABLE - UbuntuLinux18arm ###
 
         ubuntulinux18arm =  _glue.Table(
