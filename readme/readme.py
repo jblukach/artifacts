@@ -11,6 +11,8 @@ def handler(event, context):
     s3client.download_file('tempmeta', 'amazon.csv', '/tmp/amazon.csv')
     s3client.download_file('tempmeta', 'apple.csv', '/tmp/apple.csv')
     s3client.download_file('tempmeta', 'microsoft.csv', '/tmp/microsoft.csv')
+    s3client.download_file('tempmeta', 'rhel.csv', '/tmp/rhel.csv')
+    s3client.download_file('tempmeta', 'suse.csv', '/tmp/suse.csv')
     s3client.download_file('tempmeta', 'ubuntu.csv', '/tmp/ubuntu.csv')
 
     with open('/tmp/README.md', 'w') as w:
@@ -35,6 +37,24 @@ def handler(event, context):
                 w.write('|'+line[0]+'|'+line[1]+'|'+line[2]+'|'+line[3][:-1]+'|\n')
         w.write('\n\n## Microsoft Windows\n\n')
         with open('/tmp/microsoft.csv', 'r') as f:
+            line = f.readline()
+            line = line.split(',')
+            w.write('|'+line[0]+'|'+line[1]+'|'+line[2]+'|'+line[3][:-1]+'|\n')
+            w.write('|:---:|:---:|:---:|:---:|\n')
+            for line in f.readlines():
+                line = line.split(',')
+                w.write('|'+line[0]+'|'+line[1]+'|'+line[2]+'|'+line[3][:-1]+'|\n')
+        w.write('\n\n## Red Hat Linux\n\n')
+        with open('/tmp/rhel.csv', 'r') as f:
+            line = f.readline()
+            line = line.split(',')
+            w.write('|'+line[0]+'|'+line[1]+'|'+line[2]+'|'+line[3][:-1]+'|\n')
+            w.write('|:---:|:---:|:---:|:---:|\n')
+            for line in f.readlines():
+                line = line.split(',')
+                w.write('|'+line[0]+'|'+line[1]+'|'+line[2]+'|'+line[3][:-1]+'|\n')
+        w.write('\n\n## SUSE Linux\n\n')
+        with open('/tmp/suse.csv', 'r') as f:
             line = f.readline()
             line = line.split(',')
             w.write('|'+line[0]+'|'+line[1]+'|'+line[2]+'|'+line[3][:-1]+'|\n')

@@ -141,6 +141,76 @@ def handler(event, context):
     blake3 = []
     b3lols = []
 
+    with zipfile.ZipFile('/tmp/rhel.zip', 'w', compression=zipfile.ZIP_DEFLATED, compresslevel=9) as zipf:
+        with open('/tmp/rhel.csv', 'w') as f:
+            f.write('sha256,fsize,fname,count\n')
+            for obj in objects:
+                if 'RedHat' in obj:
+                    local = obj.replace('/', '-')
+                    s3client.download_file('metaout', obj, '/tmp/'+local+'.csv')
+                    zipf.write('/tmp/'+local+'.csv',local+'.csv')
+                    fsize = os.path.getsize('/tmp/'+local+'.csv')
+                    sha256 = sha256sum('/tmp/'+local+'.csv')
+                    count = 0
+                    with open('/tmp/'+local+'.csv', 'r') as r:
+                        for line in r:
+                            count += 1
+                            line = line.split(',')
+                            blake3.append(line[0])
+                            totalb3s.append(line[0])
+                            if 'b3lol' in local:
+                                b3lols.append(line[0])
+                                totallols.append(line[0])
+                    r.close()
+                    f.write(sha256+','+str(fsize)+','+local+'.csv,'+str(count)+'\n')
+            f.write(',,blake3 total,'+str(len(blake3))+'\n')
+            blake3 = list(set(blake3))
+            f.write(',,blake3 unique,'+str(len(blake3))+'\n')
+            f.write(',,b3lols total,'+str(len(b3lols))+'\n')
+            b3lols = list(set(b3lols))
+            f.write(',,b3lols unique,'+str(len(b3lols))+'\n')
+        f.close()
+        zipf.write('/tmp/rhel.csv','rhel.csv')
+    zipf.close()
+
+    blake3 = []
+    b3lols = []
+
+    with zipfile.ZipFile('/tmp/suse.zip', 'w', compression=zipfile.ZIP_DEFLATED, compresslevel=9) as zipf:
+        with open('/tmp/suse.csv', 'w') as f:
+            f.write('sha256,fsize,fname,count\n')
+            for obj in objects:
+                if 'SUSE' in obj:
+                    local = obj.replace('/', '-')
+                    s3client.download_file('metaout', obj, '/tmp/'+local+'.csv')
+                    zipf.write('/tmp/'+local+'.csv',local+'.csv')
+                    fsize = os.path.getsize('/tmp/'+local+'.csv')
+                    sha256 = sha256sum('/tmp/'+local+'.csv')
+                    count = 0
+                    with open('/tmp/'+local+'.csv', 'r') as r:
+                        for line in r:
+                            count += 1
+                            line = line.split(',')
+                            blake3.append(line[0])
+                            totalb3s.append(line[0])
+                            if 'b3lol' in local:
+                                b3lols.append(line[0])
+                                totallols.append(line[0])
+                    r.close()
+                    f.write(sha256+','+str(fsize)+','+local+'.csv,'+str(count)+'\n')
+            f.write(',,blake3 total,'+str(len(blake3))+'\n')
+            blake3 = list(set(blake3))
+            f.write(',,blake3 unique,'+str(len(blake3))+'\n')
+            f.write(',,b3lols total,'+str(len(b3lols))+'\n')
+            b3lols = list(set(b3lols))
+            f.write(',,b3lols unique,'+str(len(b3lols))+'\n')
+        f.close()
+        zipf.write('/tmp/suse.csv','suse.csv')
+    zipf.close()
+
+    blake3 = []
+    b3lols = []
+
     with zipfile.ZipFile('/tmp/ubuntu.zip', 'w', compression=zipfile.ZIP_DEFLATED, compresslevel=9) as zipf:
         with open('/tmp/ubuntu.csv', 'w') as f:
             f.write('sha256,fsize,fname,count\n')
@@ -191,18 +261,21 @@ def handler(event, context):
     s3client.upload_file('/tmp/amazon.csv', 'tempmeta', 'amazon.csv')
     s3client.upload_file('/tmp/apple.csv', 'tempmeta', 'apple.csv')
     s3client.upload_file('/tmp/microsoft.csv', 'tempmeta', 'microsoft.csv')
+    s3client.upload_file('/tmp/rhel.csv', 'tempmeta', 'rhel.csv')
+    s3client.upload_file('/tmp/suse.csv', 'tempmeta', 'suse.csv')
     s3client.upload_file('/tmp/ubuntu.csv', 'tempmeta', 'ubuntu.csv')
-    
 
     sha256amazon = sha256sum('/tmp/amazon.zip')
     sha256apple = sha256sum('/tmp/apple.zip')
     sha256microsoft = sha256sum('/tmp/microsoft.zip')
+    sha256rhel = sha256sum('/tmp/rhel.zip')
+    sha256suse = sha256sum('/tmp/suse.zip')
     sha256ubuntu = sha256sum('/tmp/ubuntu.zip')
 
     ssm = boto3.client('ssm')
 
     token = ssm.get_parameter(
-        Name = '/github/4n6ir/release', 
+        Name = '/github/4n6ir/release',
         WithDecryption = True
     )
 
@@ -220,7 +293,7 @@ def handler(event, context):
         "tag_name":"v'''+str(year)+'''.'''+str(month)+'''.'''+str(day)+'''",
         "target_commitish":"main",
         "name":"artifacts",
-        "body":"### SHA256\\n\\n- **Amazon**: '''+sha256amazon+'''\\n- **Apple**: '''+sha256apple+'''\\n- **Microsoft**: '''+sha256microsoft+'''\\n- **Ubuntu**: '''+sha256ubuntu+'''",
+        "body":"### SHA256\\n\\n- **Amazon**: '''+sha256amazon+'''\\n- **Apple**: '''+sha256apple+'''\\n- **Microsoft**: '''+sha256microsoft+'''\\n- **RHEL**: '''+sha256rhel+'''\\n- **SUSE**: '''+sha256suse+'''\\n- **Ubuntu**: '''+sha256ubuntu+'''",
         "draft":false,
         "prerelease":false,
         "generate_release_notes":false
@@ -291,6 +364,48 @@ def handler(event, context):
     url = 'https://uploads.github.com/repos/4n6ir/artifacts/releases/'+str(tagged)+'/assets'
 
     with open('/tmp/microsoft.zip', 'rb') as f:
+        data = f.read()
+    f.close()
+
+    response = requests.post(url, params=params, headers=headers, data=data)
+
+    print(response.json())
+
+    headers = {
+        'Accept': 'application/vnd.github+json',
+        'Authorization': 'Bearer '+token['Parameter']['Value'],
+        'X-GitHub-Api-Version': '2022-11-28',
+        'Content-Type': 'application/octet-stream'
+    }
+
+    params = {
+        "name":"rhel.zip"
+    }
+
+    url = 'https://uploads.github.com/repos/4n6ir/artifacts/releases/'+str(tagged)+'/assets'
+
+    with open('/tmp/rhel.zip', 'rb') as f:
+        data = f.read()
+    f.close()
+
+    response = requests.post(url, params=params, headers=headers, data=data)
+
+    print(response.json())
+
+    headers = {
+        'Accept': 'application/vnd.github+json',
+        'Authorization': 'Bearer '+token['Parameter']['Value'],
+        'X-GitHub-Api-Version': '2022-11-28',
+        'Content-Type': 'application/octet-stream'
+    }
+
+    params = {
+        "name":"suse.zip"
+    }
+
+    url = 'https://uploads.github.com/repos/4n6ir/artifacts/releases/'+str(tagged)+'/assets'
+
+    with open('/tmp/suse.zip', 'rb') as f:
         data = f.read()
     f.close()
 

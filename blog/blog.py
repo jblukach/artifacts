@@ -11,6 +11,8 @@ def handler(event, context):
     s3client.download_file('tempmeta', 'amazon.csv', '/tmp/amazon.csv')
     s3client.download_file('tempmeta', 'apple.csv', '/tmp/apple.csv')
     s3client.download_file('tempmeta', 'microsoft.csv', '/tmp/microsoft.csv')
+    s3client.download_file('tempmeta', 'rhel.csv', '/tmp/rhel.csv')
+    s3client.download_file('tempmeta', 'suse.csv', '/tmp/suse.csv')
     s3client.download_file('tempmeta', 'ubuntu.csv', '/tmp/ubuntu.csv')
 
     year = datetime.datetime.now().strftime('%Y')
@@ -49,6 +51,24 @@ def handler(event, context):
         w.write('| type | total |\n')
         w.write('|-----|\n')
         with open('/tmp/microsoft.csv', 'r') as f:
+            for line in f.readlines():
+                if 'blake3 total' in line or 'blake3 unique' in line or 'b3lols total' in line or 'b3lols unique' in line:
+                    line = line.split(',')
+                    w.write('|'+line[2]+'|'+line[3][:-1]+'|\n')
+        f.close()
+        w.write('\n\n### Red Hat Linux\n\n')
+        w.write('| type | total |\n')
+        w.write('|-----|\n')
+        with open('/tmp/rhel.csv', 'r') as f:
+            for line in f.readlines():
+                if 'blake3 total' in line or 'blake3 unique' in line or 'b3lols total' in line or 'b3lols unique' in line:
+                    line = line.split(',')
+                    w.write('|'+line[2]+'|'+line[3][:-1]+'|\n')
+        f.close()
+        w.write('\n\n### SUSE Linux\n\n')
+        w.write('| type | total |\n')
+        w.write('|-----|\n')
+        with open('/tmp/suse.csv', 'r') as f:
             for line in f.readlines():
                 if 'blake3 total' in line or 'blake3 unique' in line or 'b3lols total' in line or 'b3lols unique' in line:
                     line = line.split(',')
