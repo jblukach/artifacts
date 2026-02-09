@@ -12,8 +12,6 @@ class ArtifactsStack(Stack):
 
         account = Stack.of(self).account
 
-    ### OIDC ###
-
         provider = _iam.OpenIdConnectProvider(
             self, 'provider',
             url = 'https://token.actions.githubusercontent.com',

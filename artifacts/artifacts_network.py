@@ -10,18 +10,16 @@ class ArtifactsNetwork(Stack):
     def __init__(self, scope: Construct, construct_id: str, **kwargs) -> None:
         super().__init__(scope, construct_id, **kwargs)
 
-    ### VPC ###
-
         vpc = _ec2.Vpc(
             self, 'vpc',
-            ip_addresses = _ec2.IpAddresses.cidr('192.168.142.0/24'),
+            ip_addresses = _ec2.IpAddresses.cidr('10.255.255.0/24'),
             max_azs = 3,
             nat_gateways = 0,
             enable_dns_hostnames = True,
             enable_dns_support = True,
             subnet_configuration = [
                 _ec2.SubnetConfiguration(
-                    cidr_mask = 26,
+                    cidr_mask = 28,
                     name = 'Public',
                     subnet_type = _ec2.SubnetType.PUBLIC
                 )
@@ -35,8 +33,6 @@ class ArtifactsNetwork(Stack):
                 )
             }
         )
-
-    ### NACL ###
 
         nacl = _ec2.NetworkAcl(
             self, 'nacl',
@@ -60,8 +56,6 @@ class ArtifactsNetwork(Stack):
             rule_action = _ec2.Action.ALLOW,
             direction = _ec2.TrafficDirection.EGRESS
         )
-
-    ### Security Group ###
 
         sg = _ec2.SecurityGroup(
             self, 'sg',
