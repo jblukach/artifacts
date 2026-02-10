@@ -68,53 +68,6 @@ class ArtifactsDatabase(Stack):
             )
         )
 
-        microsoft =  _glue.Table(
-            self, 'microsoft',
-            bucket = bucket,
-            database = database,
-            table_name = 'microsoft',
-            s3_prefix = 'microsoft/',
-            columns = [
-                _glue.Column(
-                    name = 'amiid',
-                    type = _glue.Schema.STRING
-                ),
-                _glue.Column(
-                    name = 'fpath',
-                    type = _glue.Schema.STRING
-                ),
-                _glue.Column(
-                    name = 'fname',
-                    type = _glue.Schema.STRING
-                ),
-                _glue.Column(
-                    name = 'fsize',
-                    type = _glue.Schema.BIG_INT
-                ),
-                _glue.Column(
-                    name = 'b3hash',
-                    type = _glue.Schema.STRING
-                ),
-                _glue.Column(
-                    name = 'b3name',
-                    type = _glue.Schema.STRING
-                ),
-                _glue.Column(
-                    name = 'b3path',
-                    type = _glue.Schema.STRING
-                ),
-                _glue.Column(
-                    name = 'b3dir',
-                    type = _glue.Schema.STRING
-                )
-            ],
-            data_format = _glue.DataFormat(
-                input_format = _glue.InputFormat.PARQUET,
-                output_format = _glue.OutputFormat.PARQUET,
-                serialization_library = _glue.SerializationLibrary.PARQUET
-            )
-        )
-
         ubuntu =  _glue.Table(
             self, 'ubuntu',
             bucket = bucket,

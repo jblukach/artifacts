@@ -1,3 +1,5 @@
+import datetime
+
 from aws_cdk import (
     Duration,
     RemovalPolicy,
@@ -8,36 +10,66 @@ from aws_cdk import (
     aws_iam as _iam,
     aws_lambda as _lambda,
     aws_logs as _logs,
-    aws_ssm as _ssm
+    aws_s3 as _s3
 )
 
 from constructs import Construct
 
-class ArtifactsLoobins(Stack):
+class ArtifactsGtfobins(Stack):
 
     def __init__(self, scope: Construct, construct_id: str, **kwargs) -> None:
         super().__init__(scope, construct_id, **kwargs)
 
-        account = Stack.of(self).account
-        region = Stack.of(self).region
+        year = datetime.datetime.now().strftime('%Y')
+        month = datetime.datetime.now().strftime('%m')
+        day = datetime.datetime.now().strftime('%d')
 
-    ### LAYERS ###
+    ### LAMBDA LAYER ###
 
-        extensions = _ssm.StringParameter.from_string_parameter_attributes(
-            self, 'extensions',
-            parameter_name = '/extensions/account'
+        packages = _s3.Bucket.from_bucket_name(
+            self, 'packages',
+            bucket_name = 'packages-use2-lukach-io'
         )
 
-        requests = _lambda.LayerVersion.from_layer_version_arn(
+        beautifulsoup4 = _lambda.LayerVersion(
+            self, 'beautifulsoup4',
+            layer_version_name = 'beautifulsoup4',
+            description = str(year)+'-'+str(month)+'-'+str(day)+' deployment',
+            code = _lambda.Code.from_bucket(
+                bucket = packages,
+                key = 'beautifulsoup4.zip'
+            ),
+            compatible_architectures = [
+                _lambda.Architecture.ARM_64
+            ],
+            compatible_runtimes = [
+                _lambda.Runtime.PYTHON_3_13
+            ],
+            removal_policy = RemovalPolicy.DESTROY
+        )
+        
+        requests = _lambda.LayerVersion(
             self, 'requests',
-            layer_version_arn = 'arn:aws:lambda:'+region+':'+extensions.string_value+':layer:requests:7'
+            layer_version_name = 'requests',
+            description = str(year)+'-'+str(month)+'-'+str(day)+' deployment',
+            code = _lambda.Code.from_bucket(
+                bucket = packages,
+                key = 'requests.zip'
+            ),
+            compatible_architectures = [
+                _lambda.Architecture.ARM_64
+            ],
+            compatible_runtimes = [
+                _lambda.Runtime.PYTHON_3_13
+            ],
+            removal_policy = RemovalPolicy.DESTROY
         )
 
     ### DYNAMODB ###
 
-        loobins = _dynamodb.Table(
-            self, 'loobins',
-            table_name = 'loobins',
+        gtfobins = _dynamodb.Table(
+            self, 'gtfobins',
+            table_name = 'gtfobins',
             partition_key = {
                 'name': 'pk',
                 'type': _dynamodb.AttributeType.STRING
@@ -82,28 +114,28 @@ class ArtifactsLoobins(Stack):
 
     ### LAMBDA ###
 
-        loobin = _lambda.Function(
-            self, 'loobin',
-            handler = 'loobins.handler',
+        gtfobin = _lambda.Function(
+            self, 'gtfobin',
+            handler = 'gtfobins.handler',
             runtime = _lambda.Runtime.PYTHON_3_13,
-            code = _lambda.Code.from_asset('loobins'),
+            code = _lambda.Code.from_asset('gtfobins'),
             architecture = _lambda.Architecture.ARM_64,
             environment = dict(
-                AWS_ACCOUNT = account,
-                LOOBINS_TABLE = loobins.table_name
+                GTFO_TABLE = gtfobins.table_name
             ),
             timeout = Duration.seconds(900),
             memory_size = 512,
             retry_attempts = 0,
             role = role,
             layers = [
+                beautifulsoup4,
                 requests
             ]
         )
 
         logs = _logs.LogGroup(
             self, 'logs',
-            log_group_name = '/aws/lambda/'+loobin.function_name,
+            log_group_name = '/aws/lambda/'+gtfobin.function_name,
             retention = _logs.RetentionDays.ONE_MONTH,
             removal_policy = RemovalPolicy.DESTROY
         )
@@ -121,6 +153,6 @@ class ArtifactsLoobins(Stack):
 
         event.add_target(
             _targets.LambdaFunction(
-                loobin
+                gtfobin
             )
         )

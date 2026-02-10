@@ -4,6 +4,7 @@ import os
 import aws_cdk as cdk
 
 from artifacts.artifacts_database import ArtifactsDatabase
+from artifacts.artifacts_gtfobins import ArtifactsGtfobins
 from artifacts.artifacts_network import ArtifactsNetwork
 from artifacts.artifacts_stack import ArtifactsStack
 from artifacts.artifacts_storage import ArtifactsStorage
@@ -21,8 +22,8 @@ ArtifactsDatabase(
     )
 )
 
-ArtifactsNetwork(
-    app, 'ArtifactsNetwork',
+ArtifactsGtfobins(
+    app, 'ArtifactsGtfobins',
     env = cdk.Environment(
         account = os.getenv('CDK_DEFAULT_ACCOUNT'),
         region = 'us-east-2'

@@ -44,47 +44,6 @@ class ArtifactsNetwork(Stack):
             tier = _ssm.ParameterTier.STANDARD
         )
 
-        nacl = _ec2.NetworkAcl(
-            self, 'nacl',
-            vpc = vpc
-        )
-
-        nacl.add_entry(
-            'ingress100ipv4',
-            rule_number = 100,
-            cidr = _ec2.AclCidr.ipv4('0.0.0.0/0'),
-            traffic = _ec2.AclTraffic.all_traffic(),
-            rule_action = _ec2.Action.ALLOW,
-            direction = _ec2.TrafficDirection.INGRESS
-        )
-
-        nacl.add_entry(
-            'egress100ipv4',
-            rule_number = 100,
-            cidr = _ec2.AclCidr.ipv4('0.0.0.0/0'),
-            traffic = _ec2.AclTraffic.all_traffic(),
-            rule_action = _ec2.Action.ALLOW,
-            direction = _ec2.TrafficDirection.EGRESS
-        )
-
-        nacl.add_entry(
-            'ingress101ipv6',
-            rule_number = 101,
-            cidr = _ec2.AclCidr.ipv6('::/0'),
-            traffic = _ec2.AclTraffic.all_traffic(),
-            rule_action = _ec2.Action.ALLOW,
-            direction = _ec2.TrafficDirection.INGRESS
-        )
-
-        nacl.add_entry(
-            'egress101ipv6',
-            rule_number = 101,
-            cidr = _ec2.AclCidr.ipv6('::/0'),
-            traffic = _ec2.AclTraffic.all_traffic(),
-            rule_action = _ec2.Action.ALLOW,
-            direction = _ec2.TrafficDirection.EGRESS
-        )
-
         sg = _ec2.SecurityGroup(
             self, 'sg',
             vpc = vpc,
