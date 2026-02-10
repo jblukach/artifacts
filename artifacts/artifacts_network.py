@@ -1,6 +1,7 @@
 from aws_cdk import (
     Stack,
-    aws_ec2 as _ec2
+    aws_ec2 as _ec2,
+    aws_ssm as _ssm
 )
 
 from constructs import Construct
@@ -13,13 +14,14 @@ class ArtifactsNetwork(Stack):
         vpc = _ec2.Vpc(
             self, 'vpc',
             ip_addresses = _ec2.IpAddresses.cidr('10.255.255.0/24'),
-            max_azs = 3,
-            nat_gateways = 0,
+            ip_protocol = _ec2.IpProtocol.DUAL_STACK,
             enable_dns_hostnames = True,
             enable_dns_support = True,
+            nat_gateways = 0,
+            max_azs = 3,
             subnet_configuration = [
                 _ec2.SubnetConfiguration(
-                    cidr_mask = 28,
+                    cidr_mask = 26,
                     name = 'Public',
                     subnet_type = _ec2.SubnetType.PUBLIC
                 )
@@ -34,13 +36,21 @@ class ArtifactsNetwork(Stack):
             }
         )
 
+        vpcparameter = _ssm.StringParameter(
+            self, 'vpcparameter',
+            description = 'Public VPC ID',
+            parameter_name = '/network/vpc',
+            string_value = vpc.vpc_id,
+            tier = _ssm.ParameterTier.STANDARD
+        )
+
         nacl = _ec2.NetworkAcl(
             self, 'nacl',
             vpc = vpc
         )
 
         nacl.add_entry(
-            'ingress100',
+            'ingress100ipv4',
             rule_number = 100,
             cidr = _ec2.AclCidr.ipv4('0.0.0.0/0'),
             traffic = _ec2.AclTraffic.all_traffic(),
@@ -49,9 +59,27 @@ class ArtifactsNetwork(Stack):
         )
 
         nacl.add_entry(
-            'egress100',
+            'egress100ipv4',
             rule_number = 100,
             cidr = _ec2.AclCidr.ipv4('0.0.0.0/0'),
+            traffic = _ec2.AclTraffic.all_traffic(),
+            rule_action = _ec2.Action.ALLOW,
+            direction = _ec2.TrafficDirection.EGRESS
+        )
+
+        nacl.add_entry(
+            'ingress101ipv6',
+            rule_number = 101,
+            cidr = _ec2.AclCidr.ipv6('::/0'),
+            traffic = _ec2.AclTraffic.all_traffic(),
+            rule_action = _ec2.Action.ALLOW,
+            direction = _ec2.TrafficDirection.INGRESS
+        )
+
+        nacl.add_entry(
+            'egress101ipv6',
+            rule_number = 101,
+            cidr = _ec2.AclCidr.ipv6('::/0'),
             traffic = _ec2.AclTraffic.all_traffic(),
             rule_action = _ec2.Action.ALLOW,
             direction = _ec2.TrafficDirection.EGRESS
@@ -61,6 +89,96 @@ class ArtifactsNetwork(Stack):
             self, 'sg',
             vpc = vpc,
             allow_all_outbound = True,
+            allow_all_ipv6_outbound = True,
             description = 'Internet Access',
             security_group_name = 'Internet Access'
+        )
+
+        sgparameter = _ssm.StringParameter(
+            self, 'sgparameter',
+            description = 'Internet Access Security Group',
+            parameter_name = '/network/sg',
+            string_value = sg.security_group_id,
+            tier = _ssm.ParameterTier.STANDARD
+        )
+
+        publicsubnets = []
+
+        for subnet in vpc.public_subnets:
+            subnetid = {}
+            subnetid['subnet_id'] = subnet.subnet_id
+            subnetid['availability_zone'] = subnet.availability_zone
+            subnetid['route_table'] = subnet.route_table
+            publicsubnets.append(subnetid)
+
+        _ssm.StringParameter(
+            self, 'publicsubnet0',
+            description = 'Public Subnet ID',
+            parameter_name = '/network/publicsubnet0',
+            string_value = publicsubnets[0]['subnet_id'],
+            tier = _ssm.ParameterTier.STANDARD
+        )
+
+        _ssm.StringParameter(
+            self, 'publiczone0',
+            description = 'Public Availability Zone',
+            parameter_name = '/network/publiczone0',
+            string_value = publicsubnets[0]['availability_zone'],
+            tier = _ssm.ParameterTier.STANDARD
+        )
+
+        _ssm.StringParameter(
+            self, 'publicroute0',
+            description = 'Public Route ID',
+            parameter_name = '/network/publicroute0',
+            string_value = publicsubnets[0]['route_table'].route_table_id,
+            tier = _ssm.ParameterTier.STANDARD
+        )
+
+        _ssm.StringParameter(
+            self, 'publicsubnet1',
+            description = 'Public Subnet ID',
+            parameter_name = '/network/publicsubnet1',
+            string_value = publicsubnets[1]['subnet_id'],
+            tier = _ssm.ParameterTier.STANDARD
+        )
+
+        _ssm.StringParameter(
+            self, 'publiczone1',
+            description = 'Public Availability Zone',
+            parameter_name = '/network/publiczone1',
+            string_value = publicsubnets[1]['availability_zone'],
+            tier = _ssm.ParameterTier.STANDARD
+        )
+
+        _ssm.StringParameter(
+            self, 'publicroute1',
+            description = 'Public Route ID',
+            parameter_name = '/network/publicroute1',
+            string_value = publicsubnets[1]['route_table'].route_table_id,
+            tier = _ssm.ParameterTier.STANDARD
+        )
+
+        _ssm.StringParameter(
+            self, 'publicsubnet2',
+            description = 'Public Subnet ID',
+            parameter_name = '/network/publicsubnet2',
+            string_value = publicsubnets[2]['subnet_id'],
+            tier = _ssm.ParameterTier.STANDARD
+        )
+
+        _ssm.StringParameter(
+            self, 'publiczone2',
+            description = 'Public Availability Zone',
+            parameter_name = '/network/publiczone2',
+            string_value = publicsubnets[2]['availability_zone'],
+            tier = _ssm.ParameterTier.STANDARD
+        )
+
+        _ssm.StringParameter(
+            self, 'publicroute2',
+            description = 'Public Route ID',
+            parameter_name = '/network/publicroute2',
+            string_value = publicsubnets[2]['route_table'].route_table_id,
+            tier = _ssm.ParameterTier.STANDARD
         )
