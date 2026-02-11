@@ -45,6 +45,17 @@ class ArtifactsStorage(Stack):
             )
         )
 
+        matchmetabackup = _s3.Bucket(
+            self, 'matchmetabackup',
+            bucket_name = 'matchmetabackup',
+            encryption = _s3.BucketEncryption.S3_MANAGED,
+            block_public_access = _s3.BlockPublicAccess.BLOCK_ALL,
+            removal_policy = RemovalPolicy.DESTROY,
+            auto_delete_objects = False,
+            enforce_ssl = True,
+            versioned = False
+        )
+
         matchmetadata = _s3.Bucket(
             self, 'matchmetadata',
             bucket_name = 'matchmetadata',
