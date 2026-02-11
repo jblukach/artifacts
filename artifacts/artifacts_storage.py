@@ -2,7 +2,6 @@ from aws_cdk import (
     Duration,
     RemovalPolicy,
     Stack,
-    aws_iam as _iam,
     aws_s3 as _s3
 )
 
@@ -12,38 +11,6 @@ class ArtifactsStorage(Stack):
 
     def __init__(self, scope: Construct, construct_id: str, **kwargs) -> None:
         super().__init__(scope, construct_id, **kwargs)
-
-        role = _iam.Role(
-            self, 'role',
-            role_name = 'artifacts',
-            assumed_by = _iam.ServicePrincipal(
-                'ec2.amazonaws.com'
-            )
-        )
-
-        role.add_managed_policy(
-            _iam.ManagedPolicy.from_aws_managed_policy_name(
-                'EC2InstanceProfileForImageBuilder'
-            )
-        )
-
-        role.add_managed_policy(
-            _iam.ManagedPolicy.from_aws_managed_policy_name(
-                'EC2InstanceProfileForImageBuilderECRContainerBuilds'
-            )
-        )
-
-        role.add_managed_policy(
-            _iam.ManagedPolicy.from_aws_managed_policy_name(
-                'AmazonS3FullAccess'
-            )
-        )
-
-        role.add_managed_policy(
-            _iam.ManagedPolicy.from_aws_managed_policy_name(
-                'AmazonSSMManagedInstanceCore'
-            )
-        )
 
         matchmetabackup = _s3.Bucket(
             self, 'matchmetabackup',
