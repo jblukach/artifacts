@@ -5,6 +5,9 @@ import aws_cdk as cdk
 
 from artifacts.artifacts_database import ArtifactsDatabase
 from artifacts.artifacts_gtfobins import ArtifactsGtfobins
+from artifacts.artifacts_layers import ArtifactsLayers
+from artifacts.artifacts_lolbas import ArtifactsLolbas
+from artifacts.artifacts_loobins import ArtifactsLoobins
 from artifacts.artifacts_network import ArtifactsNetwork
 from artifacts.artifacts_stack import ArtifactsStack
 from artifacts.artifacts_storage import ArtifactsStorage
@@ -24,6 +27,50 @@ ArtifactsDatabase(
 
 ArtifactsGtfobins(
     app, 'ArtifactsGtfobins',
+    env = cdk.Environment(
+        account = os.getenv('CDK_DEFAULT_ACCOUNT'),
+        region = 'us-east-2'
+    ),
+    synthesizer = cdk.DefaultStackSynthesizer(
+        qualifier = 'lukach'
+    )
+)
+
+ArtifactsLayers(
+    app, 'ArtifactsLayers',
+    env = cdk.Environment(
+        account = os.getenv('CDK_DEFAULT_ACCOUNT'),
+        region = 'us-east-2'
+    ),
+    synthesizer = cdk.DefaultStackSynthesizer(
+        qualifier = 'lukach'
+    )
+)
+
+ArtifactsLolbas(
+    app, 'ArtifactsLolbas',
+    env = cdk.Environment(
+        account = os.getenv('CDK_DEFAULT_ACCOUNT'),
+        region = 'us-east-2'
+    ),
+    synthesizer = cdk.DefaultStackSynthesizer(
+        qualifier = 'lukach'
+    )
+)
+
+ArtifactsLoobins(
+    app, 'ArtifactsLoobins',
+    env = cdk.Environment(
+        account = os.getenv('CDK_DEFAULT_ACCOUNT'),
+        region = 'us-east-2'
+    ),
+    synthesizer = cdk.DefaultStackSynthesizer(
+        qualifier = 'lukach'
+    )
+)
+
+ArtifactsNetwork(
+    app, 'ArtifactsNetwork',
     env = cdk.Environment(
         account = os.getenv('CDK_DEFAULT_ACCOUNT'),
         region = 'us-east-2'

@@ -68,12 +68,106 @@ class ArtifactsDatabase(Stack):
             )
         )
 
+        macos =  _glue.Table(
+            self, 'macos',
+            bucket = bucket,
+            database = database,
+            table_name = 'macos',
+            s3_prefix = 'macos/',
+            columns = [
+                _glue.Column(
+                    name = 'amiid',
+                    type = _glue.Schema.STRING
+                ),
+                _glue.Column(
+                    name = 'fpath',
+                    type = _glue.Schema.STRING
+                ),
+                _glue.Column(
+                    name = 'fname',
+                    type = _glue.Schema.STRING
+                ),
+                _glue.Column(
+                    name = 'fsize',
+                    type = _glue.Schema.BIG_INT
+                ),
+                _glue.Column(
+                    name = 'b3hash',
+                    type = _glue.Schema.STRING
+                ),
+                _glue.Column(
+                    name = 'b3name',
+                    type = _glue.Schema.STRING
+                ),
+                _glue.Column(
+                    name = 'b3path',
+                    type = _glue.Schema.STRING
+                ),
+                _glue.Column(
+                    name = 'b3dir',
+                    type = _glue.Schema.STRING
+                )
+            ],
+            data_format = _glue.DataFormat(
+                input_format = _glue.InputFormat.PARQUET,
+                output_format = _glue.OutputFormat.PARQUET,
+                serialization_library = _glue.SerializationLibrary.PARQUET
+            )
+        )
+
         ubuntu =  _glue.Table(
             self, 'ubuntu',
             bucket = bucket,
             database = database,
             table_name = 'ubuntu',
             s3_prefix = 'ubuntu/',
+            columns = [
+                _glue.Column(
+                    name = 'amiid',
+                    type = _glue.Schema.STRING
+                ),
+                _glue.Column(
+                    name = 'fpath',
+                    type = _glue.Schema.STRING
+                ),
+                _glue.Column(
+                    name = 'fname',
+                    type = _glue.Schema.STRING
+                ),
+                _glue.Column(
+                    name = 'fsize',
+                    type = _glue.Schema.BIG_INT
+                ),
+                _glue.Column(
+                    name = 'b3hash',
+                    type = _glue.Schema.STRING
+                ),
+                _glue.Column(
+                    name = 'b3name',
+                    type = _glue.Schema.STRING
+                ),
+                _glue.Column(
+                    name = 'b3path',
+                    type = _glue.Schema.STRING
+                ),
+                _glue.Column(
+                    name = 'b3dir',
+                    type = _glue.Schema.STRING
+                )
+            ],
+            data_format = _glue.DataFormat(
+                input_format = _glue.InputFormat.PARQUET,
+                output_format = _glue.OutputFormat.PARQUET,
+                serialization_library = _glue.SerializationLibrary.PARQUET
+            )
+        )
+
+        windows =  _glue.Table(
+            self, 'windows',
+            bucket = bucket,
+            database = database,
+            table_name = 'windows',
+            s3_prefix = 'windows/',
             columns = [
                 _glue.Column(
                     name = 'amiid',

@@ -13,22 +13,12 @@ from aws_cdk import (
 
 from constructs import Construct
 
-class ArtifactsGtfobins(Stack):
+class ArtifactsLoobins(Stack):
 
     def __init__(self, scope: Construct, construct_id: str, **kwargs) -> None:
         super().__init__(scope, construct_id, **kwargs)
 
     ### LAMBDA LAYERS ###
-
-        beautifulsoup4layer = _ssm.StringParameter.from_string_parameter_attributes(
-            self, 'beautifulsoup4layer',
-            parameter_name = '/layer/beautifulsoup4'
-        )
-
-        beautifulsoup4 = _lambda.LayerVersion.from_layer_version_arn(
-            self, 'beautifulsoup4',
-            layer_version_arn = beautifulsoup4layer.string_value
-        )
 
         requestslayer = _ssm.StringParameter.from_string_parameter_attributes(
             self, 'requestslayer',
@@ -42,9 +32,9 @@ class ArtifactsGtfobins(Stack):
 
     ### DYNAMODB ###
 
-        gtfobins = _dynamodb.Table(
-            self, 'gtfobins',
-            table_name = 'gtfobins',
+        loobins = _dynamodb.Table(
+            self, 'loobins',
+            table_name = 'loobins',
             partition_key = {
                 'name': 'pk',
                 'type': _dynamodb.AttributeType.STRING
@@ -89,28 +79,27 @@ class ArtifactsGtfobins(Stack):
 
     ### LAMBDA ###
 
-        gtfobin = _lambda.Function(
-            self, 'gtfobin',
-            handler = 'gtfobins.handler',
+        loobin = _lambda.Function(
+            self, 'loobin',
+            handler = 'loobins.handler',
             runtime = _lambda.Runtime.PYTHON_3_13,
-            code = _lambda.Code.from_asset('gtfobins'),
+            code = _lambda.Code.from_asset('loobins'),
             architecture = _lambda.Architecture.ARM_64,
             environment = dict(
-                GTFO_TABLE = gtfobins.table_name
+                LOOBINS_TABLE = loobins.table_name
             ),
             timeout = Duration.seconds(900),
             memory_size = 512,
             retry_attempts = 0,
             role = role,
             layers = [
-                beautifulsoup4,
                 requests
             ]
         )
 
         logs = _logs.LogGroup(
             self, 'logs',
-            log_group_name = '/aws/lambda/'+gtfobin.function_name,
+            log_group_name = '/aws/lambda/'+loobin.function_name,
             retention = _logs.RetentionDays.ONE_MONTH,
             removal_policy = RemovalPolicy.DESTROY
         )
@@ -128,6 +117,6 @@ class ArtifactsGtfobins(Stack):
 
         event.add_target(
             _targets.LambdaFunction(
-                gtfobin
+                loobin
             )
         )
