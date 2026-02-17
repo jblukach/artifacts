@@ -7,8 +7,7 @@ from aws_cdk import (
     aws_events_targets as _targets,
     aws_iam as _iam,
     aws_lambda as _lambda,
-    aws_logs as _logs,
-    aws_ssm as _ssm
+    aws_logs as _logs
 )
 
 from constructs import Construct
@@ -17,23 +16,6 @@ class ArtifactsProcess(Stack):
 
     def __init__(self, scope: Construct, construct_id: str, **kwargs) -> None:
         super().__init__(scope, construct_id, **kwargs)
-
-        account = Stack.of(self).account
-        region = Stack.of(self).region
-
-    ### LAYERS ###
-
-        extensions = _ssm.StringParameter.from_string_parameter_attributes(
-            self, 'extensions',
-            parameter_name = '/extensions/account'
-        )
-
-        requests = _lambda.LayerVersion.from_layer_version_arn(
-            self, 'requests',
-            layer_version_arn = 'arn:aws:lambda:'+region+':'+extensions.string_value+':layer:requests:7'
-        )
-
-    ### IAM ROLE ###
 
         role = _iam.Role(
             self, 'role', 
@@ -54,14 +36,11 @@ class ArtifactsProcess(Stack):
                     's3:GetBucketLocation',
                     's3:GetObject',
                     's3:ListBucket',
-                    's3:PutObject',
-                    'ssm:GetParameter'
+                    's3:PutObject'
                 ],
                 resources = ['*']
             )
         )
-
-    ### LAMBDA ###
 
         process = _lambda.Function(
             self, 'process',
@@ -69,17 +48,10 @@ class ArtifactsProcess(Stack):
             runtime = _lambda.Runtime.PYTHON_3_13,
             code = _lambda.Code.from_asset('process'),
             architecture = _lambda.Architecture.ARM_64,
-            environment = dict(
-                AWS_ACCOUNT = account
-            ),
+            ephemeral_storage_size = Size.gibibytes(1),
             timeout = Duration.seconds(900),
-            ephemeral_storage_size = Size.gibibytes(4),
-            memory_size = 8192,
-            retry_attempts = 0,
-            role = role,
-            layers = [
-                requests
-            ]
+            memory_size = 2048,
+            role = role
         )
 
         logs = _logs.LogGroup(
@@ -93,7 +65,7 @@ class ArtifactsProcess(Stack):
             self, 'event',
             schedule = _events.Schedule.cron(
                 minute = '0',
-                hour = '12',
+                hour = '11',
                 month = '*',
                 week_day = 'SUN',
                 year = '*'

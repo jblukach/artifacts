@@ -83,7 +83,6 @@ class ArtifactsSearch(Stack):
                 architecture = _lambda.Architecture.ARM_64,
                 timeout = Duration.seconds(900),
                 memory_size = 128,
-                retry_attempts = 0,
                 role = role
             )
 
