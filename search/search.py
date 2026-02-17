@@ -110,9 +110,9 @@ def handler(event, context):
 
     elif event['category'] == 'b3lol':
 
-        if 'Microsoft' in event['name']:
+        if 'windows' in event['name']:
             lols = lolbas()
-        elif 'Apple' in event['name']:
+        elif 'macos' in event['name']:
             lols = loobins()
         else:
             lols = gtfobins()
