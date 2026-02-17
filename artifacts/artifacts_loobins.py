@@ -108,7 +108,7 @@ class ArtifactsLoobins(Stack):
             self, 'event',
             schedule = _events.Schedule.cron(
                 minute = '0',
-                hour = '10',
+                hour = '9',
                 month = '*',
                 week_day = 'SUN',
                 year = '*'
