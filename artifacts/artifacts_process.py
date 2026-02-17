@@ -48,9 +48,9 @@ class ArtifactsProcess(Stack):
             runtime = _lambda.Runtime.PYTHON_3_13,
             code = _lambda.Code.from_asset('process'),
             architecture = _lambda.Architecture.ARM_64,
-            ephemeral_storage_size = Size.gibibytes(1),
+            ephemeral_storage_size = Size.gibibytes(4),
             timeout = Duration.seconds(900),
-            memory_size = 2048,
+            memory_size = 3008,
             role = role
         )
 
