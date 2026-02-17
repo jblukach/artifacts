@@ -46,8 +46,8 @@ def handler(event, context):
             f.write(b3+'\n')
     f.close()
 
-    s3client.upload_file('/tmp/amazon.csv', 'matchmetatemporary', 'amazon.csv')
-    s3client.upload_file('/tmp/amazon-lols.csv', 'matchmetatemporary', 'amazon-lols.csv')
+    s3client.upload_file('/tmp/amazon.csv', 'matchmetastaged', 'amazon.csv')
+    s3client.upload_file('/tmp/amazon-lols.csv', 'matchmetastaged', 'amazon-lols.csv')
 
     macosb3s = []
     macoslols = []
@@ -81,8 +81,8 @@ def handler(event, context):
             f.write(b3+'\n')
     f.close()
 
-    s3client.upload_file('/tmp/macos.csv', 'matchmetatemporary', 'macos.csv')
-    s3client.upload_file('/tmp/macos-lols.csv', 'matchmetatemporary', 'macos-lols.csv')
+    s3client.upload_file('/tmp/macos.csv', 'matchmetastaged', 'macos.csv')
+    s3client.upload_file('/tmp/macos-lols.csv', 'matchmetastaged', 'macos-lols.csv')
 
     ubuntub3s = []
     ubuntulols = []
@@ -116,8 +116,8 @@ def handler(event, context):
             f.write(b3+'\n')
     f.close()
 
-    s3client.upload_file('/tmp/ubuntu.csv', 'matchmetatemporary', 'ubuntu.csv')
-    s3client.upload_file('/tmp/ubuntu-lols.csv', 'matchmetatemporary', 'ubuntu-lols.csv')
+    s3client.upload_file('/tmp/ubuntu.csv', 'matchmetastaged', 'ubuntu.csv')
+    s3client.upload_file('/tmp/ubuntu-lols.csv', 'matchmetastaged', 'ubuntu-lols.csv')
 
     windowsb3s = []
     windowslols = []
@@ -151,8 +151,8 @@ def handler(event, context):
             f.write(b3+'\n')
     f.close()
 
-    s3client.upload_file('/tmp/windows.csv', 'matchmetatemporary', 'windows.csv')
-    s3client.upload_file('/tmp/windows-lols.csv', 'matchmetatemporary', 'windows-lols.csv')
+    s3client.upload_file('/tmp/windows.csv', 'matchmetastaged', 'windows.csv')
+    s3client.upload_file('/tmp/windows-lols.csv', 'matchmetastaged', 'windows-lols.csv')
 
     return {
         'statusCode': 200,
