@@ -10,6 +10,7 @@ from artifacts.artifacts_lolbas import ArtifactsLolbas
 from artifacts.artifacts_loobins import ArtifactsLoobins
 from artifacts.artifacts_network import ArtifactsNetwork
 from artifacts.artifacts_process import ArtifactsProcess
+from artifacts.artifacts_release import ArtifactsRelease
 from artifacts.artifacts_search import ArtifactsSearch
 from artifacts.artifacts_stack import ArtifactsStack
 from artifacts.artifacts_storage import ArtifactsStorage
@@ -84,6 +85,17 @@ ArtifactsNetwork(
 
 ArtifactsProcess(
     app, 'ArtifactsProcess',
+    env = cdk.Environment(
+        account = os.getenv('CDK_DEFAULT_ACCOUNT'),
+        region = 'us-east-2'
+    ),
+    synthesizer = cdk.DefaultStackSynthesizer(
+        qualifier = 'lukach'
+    )
+)
+
+ArtifactsRelease(
+    app, 'ArtifactsRelease',
     env = cdk.Environment(
         account = os.getenv('CDK_DEFAULT_ACCOUNT'),
         region = 'us-east-2'

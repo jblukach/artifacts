@@ -1,6 +1,7 @@
 from aws_cdk import (
     Duration,
     RemovalPolicy,
+    SecretValue,
     Size,
     Stack,
     aws_events as _events,
@@ -8,6 +9,7 @@ from aws_cdk import (
     aws_iam as _iam,
     aws_lambda as _lambda,
     aws_logs as _logs,
+    aws_secretsmanager as _secrets,
     aws_ssm as _ssm
 )
 
@@ -18,19 +20,26 @@ class ArtifactsRelease(Stack):
     def __init__(self, scope: Construct, construct_id: str, **kwargs) -> None:
         super().__init__(scope, construct_id, **kwargs)
 
-        account = Stack.of(self).account
-        region = Stack.of(self).region
+    ### SECRET MANAGER ###
 
-    ### LAYERS ###
+        secret = _secrets.Secret(
+            self, 'secret',
+            secret_name = 'artifacts',
+            secret_object_value = {
+                "github": SecretValue.unsafe_plain_text("<EMPTY>")
+            }
+        )
 
-        extensions = _ssm.StringParameter.from_string_parameter_attributes(
-            self, 'extensions',
-            parameter_name = '/extensions/account'
+    ### LAMBDA LAYERS ###
+
+        requestslayer = _ssm.StringParameter.from_string_parameter_attributes(
+            self, 'requestslayer',
+            parameter_name = '/layer/requests'
         )
 
         requests = _lambda.LayerVersion.from_layer_version_arn(
             self, 'requests',
-            layer_version_arn = 'arn:aws:lambda:'+region+':'+extensions.string_value+':layer:requests:7'
+            layer_version_arn = requestslayer.string_value
         )
 
     ### IAM ROLE ###
@@ -51,12 +60,13 @@ class ArtifactsRelease(Stack):
         role.add_to_policy(
             _iam.PolicyStatement(
                 actions = [
-                    's3:GetObject',
-                    'ssm:GetParameter'
+                    's3:GetObject'
                 ],
                 resources = ['*']
             )
         )
+
+        secret.grant_read(role)
 
     ### LAMBDA ###
 
@@ -67,11 +77,11 @@ class ArtifactsRelease(Stack):
             code = _lambda.Code.from_asset('release'),
             architecture = _lambda.Architecture.ARM_64,
             environment = dict(
-                AWS_ACCOUNT = account
+                SECRET_MGR_ARN = secret.secret_arn
             ),
             timeout = Duration.seconds(900),
-            ephemeral_storage_size = Size.gibibytes(2),
-            memory_size = 2048,
+            ephemeral_storage_size = Size.gibibytes(4),
+            memory_size = 3008,
             retry_attempts = 0,
             role = role,
             layers = [
@@ -90,7 +100,7 @@ class ArtifactsRelease(Stack):
             self, 'event',
             schedule = _events.Schedule.cron(
                 minute = '0',
-                hour = '13',
+                hour = '12',
                 month = '*',
                 week_day = 'SUN',
                 year = '*'
