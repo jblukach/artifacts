@@ -16,11 +16,6 @@ class ArtifactsSearch(Stack):
     def __init__(self, scope: Construct, construct_id: str, **kwargs) -> None:
         super().__init__(scope, construct_id, **kwargs)
 
-        account = Stack.of(self).account
-        region = Stack.of(self).region
-
-    ### ATHENA SEARCH ###
-
         b3types = []
         b3types.append('b3dir')
         b3types.append('b3hash')
@@ -29,35 +24,10 @@ class ArtifactsSearch(Stack):
         b3types.append('b3path')
 
         ostypes = []
-    ### Amazon Linux ###
-        ostypes.append('AmazonLinux2023arm')
-        ostypes.append('AmazonLinux2023x86')
-        ostypes.append('AmazonLinux2arm')
-        ostypes.append('AmazonLinux2x86')
-    ### Apple macOS ###
-        ostypes.append('AppleVentura13arm')
-        ostypes.append('AppleSonoma14arm')
-        ostypes.append('AppleSequoia15arm')
-    ### Microsoft Windows ###
-        ostypes.append('MicrosoftWin2k16x86')
-        ostypes.append('MicrosoftWin2k19x86')
-        ostypes.append('MicrosoftWin2k22x86')
-        ostypes.append('MicrosoftWin2k25x86')
-    ### Red Hat Linux ###
-        ostypes.append('RedHatLinux9arm')
-        ostypes.append('RedHatLinux9x86')
-    ### SUSE Linux ###
-        ostypes.append('SUSELinux15arm')
-        ostypes.append('SUSELinux15x86')
-    ### Ubuntu Linux ###
-        ostypes.append('UbuntuLinux18arm')
-        ostypes.append('UbuntuLinux18x86')
-        ostypes.append('UbuntuLinux20arm')
-        ostypes.append('UbuntuLinux20x86')
-        ostypes.append('UbuntuLinux22arm')
-        ostypes.append('UbuntuLinux22x86')
-        ostypes.append('UbuntuLinux24arm')
-        ostypes.append('UbuntuLinux24x86')
+        ostypes.append('amazon')
+        ostypes.append('macos')
+        ostypes.append('ubuntu')
+        ostypes.append('windows')
 
         for ostype in ostypes:
 
@@ -111,9 +81,6 @@ class ArtifactsSearch(Stack):
                 runtime = _lambda.Runtime.PYTHON_3_13,
                 code = _lambda.Code.from_asset('search'),
                 architecture = _lambda.Architecture.ARM_64,
-                environment = dict(
-                    AWS_ACCOUNT = account
-                ),
                 timeout = Duration.seconds(900),
                 memory_size = 128,
                 retry_attempts = 0,
@@ -133,7 +100,7 @@ class ArtifactsSearch(Stack):
                     self, 'event'+ostype.lower()+b3type.lower(),
                     schedule = _events.Schedule.cron(
                         minute = '0',
-                        hour = '11',
+                        hour = '10',
                         month = '*',
                         week_day = 'SUN',
                         year = '*'
