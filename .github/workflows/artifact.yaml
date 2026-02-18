@@ -1,4 +1,4 @@
-name: artifacts
+name: artifact
 on:
   push:
     branches:
@@ -8,7 +8,7 @@ on:
 jobs:
   deploy:
     runs-on:
-      - codebuild-artifacts-${{ github.run_id }}-${{ github.run_attempt }}
+      - codebuild-artifact-${{ github.run_id }}-${{ github.run_attempt }}
     permissions:
       id-token: write
       contents: read
