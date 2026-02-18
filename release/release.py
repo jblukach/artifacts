@@ -125,8 +125,8 @@ def handler(event, context):
     os.system('chmod +x /tmp/poppy')
     os.system('/tmp/poppy create -c 30000000 -p 0.001 /tmp/mmi.poppy')
     os.system('/tmp/poppy create -c 200000 -p 0.001 /tmp/lol.poppy')
-    os.system('/tmp/poppy insert /tmp/mmi.poppy /tmp/blake3.csv')
-    os.system('/tmp/poppy insert /tmp/lol.poppy /tmp/b3lols.csv')
+    os.system('/tmp/poppy insert /tmp/mmi.poppy /tmp/totalb3s.csv')
+    os.system('/tmp/poppy insert /tmp/lol.poppy /tmp/totallols.csv')
     os.system('/tmp/poppy show /tmp/mmi.poppy')
     os.system('/tmp/poppy show /tmp/lol.poppy')
 
