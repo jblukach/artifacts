@@ -122,126 +122,127 @@ def handler(event, context):
             f.write(b3+'\n')
     f.close()
 
-    #os.system('chmod +x /tmp/poppy')
-    #os.system('/tmp/poppy create -c 20000000 -p 0.001 /tmp/mmi.poppy')
-    #os.system('/tmp/poppy create -c 200000 -p 0.001 /tmp/lol.poppy')
-    #os.system('/tmp/poppy insert /tmp/mmi.poppy /tmp/blake3.csv')
-    #os.system('/tmp/poppy insert /tmp/lol.poppy /tmp/b3lols.csv')
-    #os.system('/tmp/poppy show /tmp/mmi.poppy')
-    #os.system('/tmp/poppy show /tmp/lol.poppy')
+    os.system('chmod +x /tmp/poppy')
+    os.system('/tmp/poppy create -c 30000000 -p 0.001 /tmp/mmi.poppy')
+    os.system('/tmp/poppy create -c 200000 -p 0.001 /tmp/lol.poppy')
+    os.system('/tmp/poppy insert /tmp/mmi.poppy /tmp/blake3.csv')
+    os.system('/tmp/poppy insert /tmp/lol.poppy /tmp/b3lols.csv')
+    os.system('/tmp/poppy show /tmp/mmi.poppy')
+    os.system('/tmp/poppy show /tmp/lol.poppy')
 
-    #with open('/tmp/verification.csv', 'w') as f:
-    #    f.write('sha256,fname\n')
-    #    sha256 = sha256sum('/tmp/mmi.poppy')
-    #    f.write(sha256+',mmi.poppy\n')
-    #    sha256 = sha256sum('/tmp/lol.poppy')
-    #    f.write(sha256+',lol.poppy\n')
-    #f.close()
+    with open('/tmp/verification.csv', 'w') as f:
+        f.write('sha256,fname\n')
+        sha256 = sha256sum('/tmp/mmi.poppy')
+        f.write(sha256+',mmi.poppy\n')
+        sha256 = sha256sum('/tmp/lol.poppy')
+        f.write(sha256+',lol.poppy\n')
+    f.close()
 
-    #ssm = boto3.client('ssm')
+    secret = boto3.client('secretsmanager')
 
-    #token = ssm.get_parameter(
-    #    Name = '/github/jblukach/releases', 
-    #    WithDecryption = True
-    #)
+    getsecret = secret.get_secret_value(
+        SecretId = os.environ['SECRET_MGR_ARN']
+    )
 
-    #headers = {
-    #    'Accept': 'application/vnd.github+json',
-    #    'Authorization': 'Bearer '+token['Parameter']['Value'],
-    #    'X-GitHub-Api-Version': '2022-11-28'
-    #}
+    token = json.loads(getsecret['SecretString'])
 
-    #year = datetime.datetime.now().strftime('%Y')
-    #month = datetime.datetime.now().strftime('%m')
-    #day = datetime.datetime.now().strftime('%d')
+    headers = {
+        'Accept': 'application/vnd.github+json',
+        'Authorization': 'Bearer '+token['github'],
+        'X-GitHub-Api-Version': '2022-11-28'
+    }
 
-    #data = '''{
-    #    "tag_name":"v'''+str(year)+'''.'''+str(month)+'''.'''+str(day)+'''",
-    #    "target_commitish":"main",
-    #    "name":"artifacts",
-    #    "body":"### COUNT\\n\\n- **B3:** '''+str(b3count)+'''\\n- **LOL:** '''+str(lolcount)+'''",
-    #    "draft":false,
-    #    "prerelease":false,
-    #    "generate_release_notes":false
-    #}'''
+    year = datetime.datetime.now().strftime('%Y')
+    month = datetime.datetime.now().strftime('%m')
+    day = datetime.datetime.now().strftime('%d')
 
-    #response = requests.post(
-    #    'https://api.github.com/repos/jblukach/artifacts/releases',
-    #    headers=headers,
-    #    data=data
-    #)
+    data = '''{
+        "tag_name":"v'''+str(year)+'''.'''+str(month)+'''.'''+str(day)+'''",
+        "target_commitish":"main",
+        "name":"artifacts",
+        "body":"### B3: '''+str(countb3s)+'''\\n\\n- **amazon:** '''+str(amazon)+'''\\n- **macos:** '''+str(macos)+'''\\n- **ubuntu:** '''+str(ubuntu)+'''\\n- **windows:** '''+str(windows)+'''\\n\\n### LOL: '''+str(countlols)+'''\\n\\n- **amazon:** '''+str(amazonlols)+'''\\n- **macos:** '''+str(macoslols)+'''\\n- **ubuntu:** '''+str(ubuntulols)+'''\\n- **windows:** '''+str(windowslols)+'''\\n\\n",
+        "draft":false,
+        "prerelease":false,
+        "generate_release_notes":false
+    }'''
 
-    #tagged = response.json()['id']
-    #print(response.json())
+    response = requests.post(
+        'https://api.github.com/repos/jblukach/artifacts/releases',
+        headers=headers,
+        data=data
+    )
+
+    tagged = response.json()['id']
+    print(response.json())
 
     ### mmi.poppy ###
 
-    #headers = {
-    #    'Accept': 'application/vnd.github+json',
-    #    'Authorization': 'Bearer '+token['Parameter']['Value'],
-    #    'X-GitHub-Api-Version': '2022-11-28',
-    #    'Content-Type': 'application/octet-stream'
-    #}
+    headers = {
+        'Accept': 'application/vnd.github+json',
+        'Authorization': 'Bearer '+token['github'],
+        'X-GitHub-Api-Version': '2022-11-28',
+        'Content-Type': 'application/octet-stream'
+    }
 
-    #params = {
-    #    "name":"mmi.poppy"
-    #}
+    params = {
+        "name":"mmi.poppy"
+    }
 
-    #url = 'https://uploads.github.com/repos/jblukach/artifacts/releases/'+str(tagged)+'/assets'
+    url = 'https://uploads.github.com/repos/jblukach/artifacts/releases/'+str(tagged)+'/assets'
 
-    #with open('/tmp/mmi.poppy', 'rb') as f:
-    #    data = f.read()
-    #f.close()
+    with open('/tmp/mmi.poppy', 'rb') as f:
+        data = f.read()
+    f.close()
 
-    #response = requests.post(url, params=params, headers=headers, data=data)
+    response = requests.post(url, params=params, headers=headers, data=data)
 
-    #print(response.json())
+    print(response.json())
 
     ### lol.poppy ###
 
-    #headers = {
-    #    'Accept': 'application/vnd.github+json',
-    #    'Authorization': 'Bearer '+token['Parameter']['Value'],
-    #    'X-GitHub-Api-Version': '2022-11-28',
-    #    'Content-Type': 'application/octet-stream'
-    #}
+    headers = {
+        'Accept': 'application/vnd.github+json',
+        'Authorization': 'Bearer '+token['github'],
+        'X-GitHub-Api-Version': '2022-11-28',
+        'Content-Type': 'application/octet-stream'
+    }
 
-    #params = {
-    #    "name":"lol.poppy"
-    #}
+    params = {
+        "name":"lol.poppy"
+    }
 
-    #url = 'https://uploads.github.com/repos/jblukach/artifacts/releases/'+str(tagged)+'/assets'
+    url = 'https://uploads.github.com/repos/jblukach/artifacts/releases/'+str(tagged)+'/assets'
 
-    #with open('/tmp/lol.poppy', 'rb') as f:
-    #    data = f.read()
-    #f.close()
+    with open('/tmp/lol.poppy', 'rb') as f:
+        data = f.read()
+    f.close()
 
-    #response = requests.post(url, params=params, headers=headers, data=data)
+    response = requests.post(url, params=params, headers=headers, data=data)
 
-    #print(response.json())
+    print(response.json())
 
     ### verification.csv ###
 
-    #headers = {
-    #    'Accept': 'application/vnd.github+json',
-    #    'Authorization': 'Bearer '+token['Parameter']['Value'],
-    #    'X-GitHub-Api-Version': '2022-11-28',
-    #    'Content-Type': 'application/octet-stream'
-    #}
+    headers = {
+        'Accept': 'application/vnd.github+json',
+        'Authorization': 'Bearer '+token['github'],
+        'X-GitHub-Api-Version': '2022-11-28',
+        'Content-Type': 'application/octet-stream'
+    }
 
-    #params = {
-    #    "name":"verification.csv"
-    #}
+    params = {
+        "name":"verification.csv"
+    }
 
-    #url = 'https://uploads.github.com/repos/jblukach/artifacts/releases/'+str(tagged)+'/assets'
+    url = 'https://uploads.github.com/repos/jblukach/artifacts/releases/'+str(tagged)+'/assets'
 
-    #with open('/tmp/verification.csv', 'rb') as f:
-    #    data = f.read()
+    with open('/tmp/verification.csv', 'rb') as f:
+        data = f.read()
     f.close()
 
-    #response = requests.post(url, params=params, headers=headers, data=data)
+    response = requests.post(url, params=params, headers=headers, data=data)
 
-    #print(response.json())
+    print(response.json())
 
     return {
         'statusCode': 200,

@@ -81,7 +81,7 @@ class ArtifactsRelease(Stack):
             ),
             timeout = Duration.seconds(900),
             ephemeral_storage_size = Size.gibibytes(4),
-            memory_size = 3008,
+            memory_size = 4096,
             retry_attempts = 0,
             role = role,
             layers = [
